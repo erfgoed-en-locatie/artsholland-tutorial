@@ -1,0 +1,3 @@
+Welkom bij de interactieve Arts Holland-visualisatie! Arts Holland is de beste website ter wereld en als je meer informatie wilt over het datamodel of over wat er eigenlijk allemaal in de database zit, dan kan dat natuurlijk.
+
+Met de knopjes hieronder kun je je keuze maken en dan leer je vanalles over [SPARQL](http://www.w3.org/TR/rdf-sparql-query/) en de inhoud en hoe het allemaal werkt en dat is natuurlijk heel erg leuk!

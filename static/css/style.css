@@ -1,22 +1,30 @@
-/*body {
+body {
+	background-color: #00ABE6;	
 	font-size: 14px;
 	font-family: Futura, "Trebuchet MS", Arial, sans-serif;
 	text-rendering: optimizeLegibility;
-	margin-top: 1em;
-	overflow-y: scroll;
 }
 
-.node circle {
-  fill: #00ABE6;
-  stroke: #00ABE6;
-  stroke-width: 1.5px;
+#header h1 {
+	color: white;
 }
 
-.link {
-  fill: none;
-  stroke: #A1D4E6;
-  stroke-width: 1.5px;
-}*/
+#content #vis, #content #doc {
+	width: 50%;
+	background-color: white;
+	position: relative;
+	bottom: 0;
+}
+
+#content #vis {
+	float: left;
+}
+
+#content #doc {
+	float: right;
+}
+
+
 
 
 

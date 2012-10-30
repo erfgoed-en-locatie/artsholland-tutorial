@@ -1,0 +1,9 @@
+SELECT DISTINCT ?class
+WHERE {
+	[] a ?class
+	FILTER (?class = <http://purl.org/artsholland/1.0/Event>
+		|| ?class = <http://purl.org/artsholland/1.0/Venue>
+		|| ?class = <http://purl.org/artsholland/1.0/Production>
+	)
+}
+LIMIT 3

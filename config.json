@@ -1,0 +1,31 @@
+{
+	"title": "Arts Holland",
+	"doc": "file:artsholland.markdown",
+	"sections": {
+		"content": {
+			"title": "Content",
+			"steps": [
+				{
+					"title": "Koek",
+					"doc": "file:content1.markdown",
+					"sparql": "file:content1.sparql"
+				},
+				{
+					"title": "Koek",
+					"doc": "file:content2.markdown",
+					"sparql": "file:content2.sparql"
+				}
+			]
+		},
+		"model": {
+			"title": "Model",
+			"steps": [
+				{
+					"title": "Koek",
+					"doc": "file:model1.markdown",
+					"sparql": "file:model1.sparql"
+				}			
+			]
+		}
+	}
+}
