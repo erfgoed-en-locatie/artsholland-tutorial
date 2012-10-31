@@ -4,20 +4,27 @@
 		<meta charset="utf-8">
 		<title>Developing Arts Holland - Visualized</title>
 		<link href="static/css/style.css" rel="stylesheet" type="text/css">
-		<script type="text/javascript" src="static/js/jquery-1.8.2.min.js"></script>
-		<script type="text/javascript" src="static/js/d3.v2.min.js"></script>
-		<script type="text/javascript" src="static/js/handlebars-1.0.rc.1.js"></script>
+		<link rel="stylesheet" href="static/css/codemirror/codemirror.css">
+		<script type="text/javascript" src="static/js/jquery/jquery-1.8.2.min.js"></script>
+		<script type="text/javascript" src="static/js/d3/d3.v2.min.js"></script>
+		<script type="text/javascript" src="static/js/d3/d3.layout.js"></script>		
+		<script type="text/javascript" src="static/js/handlebars/handlebars-1.0.rc.1.js"></script>
+		<script src="static/js/codemirror/codemirror.js"></script>
+		<script src="static/js/codemirror/sparql.js"></script>
 		<script type="text/x-handlebars-template" id="step-template">
-			<li data-id="{{id}}">
-				<h2>{{title}}</h2>
-				{{{doc}}}
-				<div class="sparql">{{sparql}}</div>
-				<div class="options">
-				{{#each options}}
-					<button>{{this}}</button>
-				{{/each}}
-				</div>
-			</li>
+			<h2>{{title}}</h2>
+			{{{doc}}}				
+			{{#if sparql}}
+			<textarea class="sparql">{{sparql}}</textarea>
+		  	{{/if}}
+			<div class="options">
+			{{#each options}}
+				<button data-step-type="{{type}}" data-step-section="{{section}}" data-step-index="{{index}}">{{title}}</button>
+			{{/each}}
+			</div>
+			<script type="text/javascript">
+				alert("KOd!! {{title}}");
+			</script>
 		</script>
 		<script type="text/javascript" src="static/js/vis.js"></script>
 	</head>
@@ -28,7 +35,7 @@
 		<div id="content">
 			<div id="vis"></div>
 			<div id="doc">
-				<ol id="steps">
+				<ol>
 				</ol>
 			</div>
 		</div>

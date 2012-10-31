@@ -43,7 +43,7 @@ Get all the venues with more than one event in first week of November 2012 in Am
 			WHERE {
 				?venue a ah:Venue ;
 					ah:locationAddress ?address .	
-				?address vcard:locality "Amsterdam" .
+				?address vcard:locality ?city .
 		
 				?event a ah:Event ;
 					ah:venue ?venue ;

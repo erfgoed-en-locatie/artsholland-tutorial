@@ -1,0 +1,8 @@
+SELECT DISTINCT ?predicate ?range
+WHERE {
+	?subject a ah:Event ;
+		?predicate ?object .
+	OPTIONAL {
+		?predicate rdfs:range ?range .
+	}
+} LIMIT 100

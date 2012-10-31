@@ -67,7 +67,7 @@ app.get("/sparql", function(req, res) {
 	console.log("vis");
 });
 
-app.get("/steps.json", function(req, res) {
+app.get("/tree.json", function(req, res) {
 	var configNew = traverse(config).forEach(function (x) {
 	    if (typeof x === "string" && x.indexOf("file:") != -1) {
 			var u = this;
@@ -106,6 +106,5 @@ function flatten(obj, into	) {
             }
         }
     }
-
     return into;
 }

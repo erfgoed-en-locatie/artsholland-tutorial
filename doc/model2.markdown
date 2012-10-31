@@ -1,0 +1,1 @@
+EN hier zien jullie de predicates van de ?class-klasse! Mooi!

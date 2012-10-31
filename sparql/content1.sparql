@@ -1,3 +1,7 @@
+PREFIX ah: <http://purl.org/artsholland/1.0/>
+PREFIX time: <http://www.w3.org/2006/time#>
+PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 SELECT DISTINCT ?city (COUNT(?event) AS ?events)
 WHERE {
 	?event a ah:Event ;
@@ -9,7 +13,7 @@ WHERE {
 	?address vcard:locality ?city .
 
 	FILTER (?date >= "2012-11-01"^^xsd:dateTime)
-	FILTER (?date < "2012-12-01"^^xsd:dateTime)
+	FILTER (?date < "2012-11-08"^^xsd:dateTime)
 } 
 GROUP BY ?city
 ORDER BY DESC(?events)

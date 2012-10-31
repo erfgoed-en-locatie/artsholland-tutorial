@@ -1,31 +1,43 @@
 {
+	"name": "artsholland",
 	"title": "Arts Holland",
 	"doc": "file:artsholland.markdown",
-	"sections": {
-		"content": {
+	"children": [
+		{
+			"name": "content",
 			"title": "Content",
-			"steps": [
-				{
-					"title": "Koek",
-					"doc": "file:content1.markdown",
-					"sparql": "file:content1.sparql"
-				},
-				{
-					"title": "Koek",
+			"doc": "file:content1.markdown",
+			"sparql": "file:content1.sparql",
+			"children": [],
+			"source": [
+				{		
+					"name": "content2",
+					"title": "Content 2",
 					"doc": "file:content2.markdown",
 					"sparql": "file:content2.sparql"
+				},
+				{		
+					"name": "content3",
+					"title": "Content 3",
+					"doc": "file:content3.markdown",
+					"sparql": "file:content3.sparql"
 				}
 			]
 		},
-		"model": {
+		{
+			"name": "model",
 			"title": "Model",
-			"steps": [
-				{
-					"title": "Koek",
-					"doc": "file:model1.markdown",
-					"sparql": "file:model1.sparql"
-				}			
+			"doc": "file:model1.markdown",
+			"sparql": "file:model1.sparql",
+			"children": [],
+			"source": [
+				{		
+					"name": "model2",
+					"title": "Model 2",
+					"doc": "file:model2.markdown",
+					"sparql": "file:model2.sparql"
+				}
 			]
-		}
-	}
+		}	
+	]
 }

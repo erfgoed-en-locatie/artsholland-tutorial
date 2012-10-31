@@ -1,1 +1,1 @@
-Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! 
+Arts Holland bevat gegevens over culturele evenementen in heel Nederland. De meeste evenementen vinden in de grootste steden plaats, dat zien jullie hier:

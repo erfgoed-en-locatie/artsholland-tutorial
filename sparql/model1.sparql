@@ -5,5 +5,4 @@ WHERE {
 		|| ?class = <http://purl.org/artsholland/1.0/Venue>
 		|| ?class = <http://purl.org/artsholland/1.0/Production>
 	)
-}
-LIMIT 3
+} LIMIT 3

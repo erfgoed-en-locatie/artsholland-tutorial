@@ -1,1 +1,1 @@
-Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! Four cities! 
+In ?city zijn 'n hoop evenementlocaties. De belangrijkste vind je zo:

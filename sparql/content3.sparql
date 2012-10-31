@@ -1,0 +1,23 @@
+SELECT ?event ?date ?title ?description ?genreLabel ?homepage
+WHERE {
+	?event ah:venue ?venue ;
+		time:hasBeginning ?date ;	
+		ah:production ?production .
+	
+	?production	dc:description ?description	;
+		dc:title ?title ;		
+		ah:genre ?genre .
+	
+	?genre rdfs:label ?genreLabel .
+
+	OPTIONAL {
+		?production foaf:homepage ?homepage .
+	}
+	
+	FILTER (?date >= "2012-11-01"^^xsd:dateTime)
+	FILTER (?date < "2012-11-08"^^xsd:dateTime)
+	
+	FILTER (langMatches(lang(?title), "nl"))
+	FILTER (langMatches(lang(?description), "nl"))
+} 
+ORDER BY ?date
