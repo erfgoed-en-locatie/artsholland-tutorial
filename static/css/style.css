@@ -5,6 +5,10 @@ body {
 	text-rendering: optimizeLegibility;
 }
 
+.hidden {
+  display: none;
+}
+
 #header h1 {
 	color: white;
 }
@@ -28,6 +32,13 @@ body {
 	padding-right: 2em;
 }
 
+/* SVG */
+
+.link {
+	fill: none;
+	stroke: #CCC;
+	stroke-width: 1.5px;
+}
 
 
 

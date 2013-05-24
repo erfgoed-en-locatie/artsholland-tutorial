@@ -17,7 +17,6 @@ WHERE {
 			FILTER (?date < "2012-11-08"^^xsd:dateTime)
 		} 
 		GROUP BY ?venue 
-		ORDER BY DESC(?events)
 		LIMIT 10
 	}
 }

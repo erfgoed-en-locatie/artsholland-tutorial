@@ -2,25 +2,28 @@
 	"name": "artsholland",
 	"title": "Arts Holland",
 	"doc": "file:artsholland.markdown",
-	"buttons": [
-    "Content",
-    "Model"
-	],	
-	"_children": [
-		{
-      "name": "content",
+	"vars": {
+		"display": "title"
+	},	
+	"options": {
+		"content": {
 			"title": "Content",
 			"doc": "file:content1.markdown",
 			"sparql": "file:content1.sparql",
-			"vars": {				
+			"vars": {
+				"display": "city"
 			},
-			"children": [],
+			"options": {},
 			"source": [
 				{		
-					"name": "?city",
-					"title": "Events in ?city",
+					"name": "content2",
+					"title": "Content 2",
 					"doc": "file:content2.markdown",
-					"sparql": "file:content2.sparql"
+					"sparql": "file:content2.sparql",
+					"vars": {
+						"display": "title",
+						"query": "venue"
+					}
 				},
 				{		
 					"name": "content3",
@@ -30,15 +33,14 @@
 				}
 			]
 		},
-		{
-			"name": "model",
-      "title": "Model",
+		"model": {
+			"title": "Model",
 			"doc": "file:model1.markdown",
 			"sparql": "file:model1.sparql",
 			"vars": {
 				"display": "label"
 			},
-			"children": [],
+			"options": {},
 			"source": [
 				{		
 					"name": "model2",
@@ -52,5 +54,5 @@
 				}
 			]
 		}
-	]
+	}
 }

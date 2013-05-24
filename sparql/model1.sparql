@@ -1,4 +1,5 @@
-SELECT DISTINCT ?class
+# Pak title uit label van klasse (dus uit ontology)
+SELECT DISTINCT (replace(str(?class), "http://purl.org/artsholland/1.0/", "") AS ?label) ?class
 WHERE {
 	[] a ?class
 	FILTER (?class = <http://purl.org/artsholland/1.0/Event>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+text {
+  font: bold 48px monospace;
+}
+
+.enter {
+  fill: green;
+}
+
+.update {
+  fill: #333;
+}
+
+</style>
+<body>
+<script src="http://d3js.org/d3.v2.min.js?2.10.1"></script>
+<script>
+
+var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+
+var width = 960,
+    height = 500;
+
+var ol = d3.select("body").append("ol");
+
+function update(data) {
+
+  // DATA JOIN
+  // Join new data with old elements, if any.
+  var li = ol.selectAll("li")
+      .data(data, function(d) { return d; });
+
+  // UPDATE
+  // Update old elements as needed.
+  li.attr("class", "update");
+
+  // ENTER
+  // Create new elements as needed.
+  li.enter().append("li")
+      .attr("class", "enter")
+      .text(function(d) { return d; });
+
+  // ENTER + UPDATE
+  // Appending to the enter selection expands the update selection to include
+  // entering elements; so, operations on the update selection after appending to
+  // the enter selection will apply to both entering and updating nodes.
+  li.text(function(d) { return d; });
+
+  // EXIT
+  // Remove old elements as needed.
+  li.exit().remove();
+}
+
+// The initial display.
+update(alphabet);
+
+// Grab a random sample of letters from the alphabet, in alphabetical order.
+setInterval(function() {
+  update(shuffle(alphabet)
+      .slice(0, Math.floor(Math.random() * 26))
+      .sort());
+}, 1500);
+
+// Shuffles the input array.
+function shuffle(array) {
+  var m = array.length, t, i;
+  while (m) {
+    i = Math.floor(Math.random() * m--);
+    t = array[m], array[m] = array[i], array[i] = t;
+  }
+  return array;
+}
+
+function randomTree() {
+  var chips = JSON.parse(JSON.stringify(hond));
+  
+}
+  
+
+</script>
