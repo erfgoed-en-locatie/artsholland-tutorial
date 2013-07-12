@@ -1,12 +1,60 @@
 var startVis = function() { 
 
-  var m = 10,
-      margin = {top: m, right: m, bottom: m, left: m},
-      width = 1075 - margin.left - margin.right,
-      height = 804 - margin.top - margin.bottom;
-
+  var margin = {top: 0, right: 0, bottom: 0, left: 0},
+      width = 800 - margin.left - margin.right,
+      height = 800 - margin.top - margin.bottom;
+      
   var tree = d3.layout.tree()
-      .size([width, height]);
+      //.separation(function(a, b) { return a.parent === b.parent ? 2 : 2; })
+      .size([height, width]);
+      
+  var drawarea = d3.select("#vis").append("svg:svg")
+      .attr("class","svg_container")
+      .attr("width", width)
+      .attr("height", height)
+      .style("overflow", "scroll")
+    .append("svg:g")
+      .attr("class","drawarea");
+      
+  var vis = drawarea   
+    .append("svg:g");
+    
+  var logo = drawarea   
+    .append("svg:g")
+      .attr("id","logo");
+  
+      //.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  
+  d3.xml("static/artsholland.svg", "image/svg+xml", function(xml) {    
+    $('#logo').append(xml.documentElement)
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+  });
+  
+  
+  d3.select("svg")
+      .call(d3.behavior.zoom()
+            .scaleExtent([1, 2])
+            .on("zoom", zoom));      
+  
+  function zoom() {
+      var scale = d3.event.scale,
+          translation = d3.event.translate,
+          tbound = -height * scale,
+          bbound = height * scale,
+          lbound = (-width + margin.right) * scale,
+          rbound = (width - margin.left) * scale;
+      // limit translation to thresholds
+      translation = [
+          Math.max(Math.min(translation[0], rbound), lbound),
+          Math.max(Math.min(translation[1], bbound), tbound)
+      ];
+      d3.select(".drawarea")
+          .attr("transform", "translate(" + translation + ")" +
+                " scale(" + scale + ")");
+  }
+
+
+  // Load data
 
   var contents = {}
   d3.json("contents.json", function(json) {
@@ -18,81 +66,52 @@ var startVis = function() {
     prefixes = json;
   });
   
-  var root, nodes;
+  var root;//, nodes;
   d3.json("tree.json", function(json) {
     root = json;
-    nodes = tree(root);
-    
-    root.parent = root;
-    root.px = root.x;
-    root.py = root.y;
-    
     update();
   });
-
-  var svg = d3.select("#vis").append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-      .attr("transform", "translate(" + 0 + "," + 0 + ")");
-
-  var node = svg.selectAll(".node"),
-      link = svg.selectAll(".link");
-
    
   function update() {
-    drawTree(root.children[0], -1, 100);
-    //drawTree(root.children[1], 1, 100);
+    drawTree(root.children[0], -1, 50);
+    drawTree(root.children[1], 1, 100);
   }  
   
-  function drawTree(_root, side, offset) {
+  function drawTree(root, side, offset) {
     // Recompute the layout and data join.
-    var _nodes = tree.nodes(_root);    
-    node = node.data(_nodes, function(d) { return d.id; });
-    link = link.data(tree.links(_nodes), function(d) { return d.source.id + "-" + d.target.id; });
-
-    var diagonal = d3.svg.diagonal()
-        .projection(function(d) { return [d.y, d.x]; });
     
-    var nodeEnter = node.enter();  
+    var nodes = tree.nodes(root);    
+    
+    var elbow = function(d, i) {
+      return "M" + (d.source.y / 2 * side + width / 2 + offset * side) + "," + d.source.x
+           + "H" + (d.target.y / 2 * side  + width / 2 + offset * side) + "V" + d.target.x
+           + (d.target.children ? "" : "h" + margin.right);
+    }
+    
+    var link = vis.selectAll(".link")
+        .data(tree.links(nodes), function(d) { return [d.source.path, d.target.path]; })
+        .attr("d", elbow)
+      .enter().append("path")
+        .attr("class", "link")
+        .attr("d", elbow);
 
-    nodeEnter.append("circle")
+    var node = vis.selectAll(".node")
+        .data(nodes, function(d) { return d.path; })
+        .attr("transform", function(d) { return "translate(" + (d.y / 2 * side + width / 2 + offset * side) + "," + d.x + ")"; })
+      .enter().append("g")
         .attr("class", "node")
-        .attr("r", 9)
-        .attr("cx", function(d) { return d.parent.py; })
-        .attr("cy", function(d) { return d.parent.px; })
+        .attr("transform", function(d) { return "translate(" + (d.y / 2 * side + width / 2 + offset * side) + "," + d.x + ")"; })
+
+    node.append("text")
+        .attr("class", "name")
+        .attr("x", 8)
+        .attr("y", -6)
+        .text(function(d) { return d.title; })
+        .attr("text-anchor", function(d) { return side > 0 ? "begin": "end"; })
         .on("click", function(d) {
           nodeClick(d);
         });
-    
-    nodeEnter.append("svg:text")
-        .attr("class", "nodetext")
-        .attr("x", function(d) { return d.parent.py + 15; })
-        .attr("y", function(d) { return d.parent.px + 5; })      
-        .text(function(d) { return d.title; })
-
-    // Add entering links in the parent’s old position.
-    link.enter().insert("path", ".node")
-        .attr("class", "link")
-        .attr("d", function(d) {
-          var o = {x: d.source.py * side, y: d.source.px};
-          return diagonal({source: o, target: o});
-        });
-
-    // Transition nodes and links to their new positions.
-    var t = svg.transition()
-        .duration(200);
-
-    t.selectAll(".link")
-        .attr("d", diagonal);
-
-    t.selectAll(".node")
-        .attr("cx", function(d) { return d.py = d.y; })
-        .attr("cy", function(d) { return d.px = d.x; });
-    
-    t.selectAll(".nodetext")
-        .attr("x", function(d) { return d.py = d.y + 15; })
-        .attr("y", function(d) { return d.px = d.x + 5; });  
+        
   }
   
   function nodeClick(d) {
@@ -114,7 +133,7 @@ var startVis = function() {
         var title = source.title;
         
         var p = d;
-        while (p.id != 0) {
+        while (p.parent) {
           if (p.vars) {
             sparql = replaceVars(sparql, p.vars);
           }
@@ -127,7 +146,6 @@ var startVis = function() {
           for (var i = 0; i < results.length; i++) {
             var vars = results[i];      
             var newChild = {
-              id: nodes.length + i,
               title: replacePrefixes(getVar(source.child_title, vars), prefixes),
               path: d.path.concat([i]),
               vars: vars
@@ -136,10 +154,7 @@ var startVis = function() {
           }          
 
           d.children = newChildren;
-          nodes = nodes.concat(newChildren);
-
           update();
-
         });        
       }      
     }    

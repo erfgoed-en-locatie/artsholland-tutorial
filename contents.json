@@ -1,17 +1,14 @@
 {
-	"name": "artsholland",
 	"title": "Arts Holland",
 	"doc": "file:artsholland.markdown",	
 	"children": [
 		{
-      "name": "content",
 			"title": "Content",
 			"doc": "file:content1.markdown",
 			"sparql": "file:content1.sparql",
       "child_title": "??city",
 			"source": [
 				{		
-					"name": "??city",    
 					"title": "??city",
 					"longtitle": "Events in ??city",
 					"doc": "file:content2.markdown",
@@ -19,7 +16,6 @@
           "child_title": "??venue_title"
 				},
 				{		
-					"name": "content3",
 					"title": "Content 3",
 					"doc": "file:content3.markdown",
 					"sparql": "file:content3.sparql",
@@ -28,14 +24,12 @@
 			]
 		},
 		{
-			"name": "model",
       "title": "Model",
 			"doc": "file:model1.markdown",
 			"sparql": "file:model1.sparql",
       "child_title": "??class_label", 
 			"source": [
 				{		
-					"name": "??class_label",
 					"title": "??class_label",
           "longtitle": "Events chips chips ??class_label",
 					"doc": "file:model2.markdown",
@@ -43,7 +37,6 @@
           "child_title": "??predicate"
 				},
 				{		
-					"name": "??class_label",
 					"title": "??class_label",
           "longtitle": "Events chips chips ??class_label",
 					"doc": "file:model3.markdown",
