@@ -1,0 +1,4 @@
+SELECT DISTINCT ?property ?value
+WHERE {
+	<??predicate> ?property ?value 
+}

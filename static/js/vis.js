@@ -1,137 +1,147 @@
-// $(document).ready(function() {
-//   
-//   // Main data structure, read from /tree.json
-//   // TODO: rename to tree ?
-//   var data = {};
-//   // Current path in tree, by name of options 
-//   // OR USE arrays and index?
-//   var path = [];
-//   
-//   var stepSource = $("#step-template").html();
-//   var stepTemplate = Handlebars.compile(stepSource);
-//   
-//   // TODO: pak nu + 'n week:
-//   //dateFrom = "2012-12-01"
-//   //dateTo = "2012-12-08"
-//   var width = 400;
-//   var height = 600;
-//   
-//   var tree = d3.layout.tree()
-//     .size([width, height])
-//     .children(function(d) {      
-//       return d.options;
-//       /*if ("options" in d && d.options.length !== 0) {
-//         return d.options;
-//       } else if ("results" in d && d.results.length !== 0) {
-//         var options = d.results;
-//       } else { // Grijp uit source
-//         var options = d.source;
-//       }
-//       var buttons = [];
-//       // TODO: replace with for (;;)
-//       for (var i in options) {
-//         var title = options[i][d.vars.display];
-//         var button = {
-//           "name": options[i].name,
-//           "title": title
-//         }
-//         buttons.push(button);
-//       }
-//       return buttons;
-//       
-//       //return d.children;*/
-//     });
-//   
-//   
-//   
-//   
-//   
-// 
-//   
-//   d3.json("tree.json", function(json) {
-//     data = json;
-//     update();
-//   });
-//   
-//   var update = function() {
-//     
-//     var nodes = tree.nodes(data);
-// 
-//     d3.select("#doc ol")
-//       .selectAll("li")
-//       .data(nodes)
-//       .enter()
-//       .append("li")
-//       .html(function(d) {    
-//         if ("options" in d && d.options.length !== 0) {
-//           var options = d.options;
-//         }
-//         d.buttons = [];
-//         for (var name in options) {
-//           var title = options[name][d.vars.display];
-//           var button = {
-//             name: name,
-//             title: title,
-//             depth: 1
-//           }
-//           d.buttons.push(button);
-//         }
-//         //TODO: visible als in pad!
-//         var html = stepTemplate(d);
-//         return html;
-//       });
-// 
-//     $("textarea:visible").each(function(index) {
-//       CodeMirror.fromTextArea(this, {
-//         "readOnly": true
-//       });    
-//     });
-//   };
-//   
-//   $("body").on("click", "button", function() {
-//     var name = $(this).attr("data-name");
-//     var depth = parseInt($(this).attr("data-depth"));
-//     
-//     var element = {};
-//     var key;
-//     
-//     element = data.options[name];
-//     
-//     path = path.slice(0, depth - 1);
-//     path.push(name);    
-// 
-//     var options = data.options;
-//     var path_loaded = true;
-//     var i = 0;
-//     for (i; i <  path.length; i++) {
-//       if (!(options && path[i] in options)) {
-//         path_loaded = false;
-//         break;
-//       }
-//     }
-//     
-//     // If path_loaded is false, tree does not contain new path completely 
-//     // in options block. Need to fetch en parse from source block.
-// 
-//     
-//     //zoek of bestaat data[path].options[name]
-//     //data.options[name]
-//     update();
-//     
-// //     executeSPARQL(element.sparql, function(results) {      
-// //       //Fill  data.options[path[0]].options met alle resulataten uit results
-// //       
-// //       for (var i = 0; i < results.length; i++) {
-// //          //data.options[name].options
-// //       }
-// //       
-// // /*      if ("children" in data) {
-// //         data.children.push(element);
-// //       } else {
-// //         data.children = [element];
-// //       }*/
-// //       update();
-// //     });
-//     
-//   });
-// });
+var startVis = function() { 
+
+  var m = 10,
+      margin = {top: m, right: m, bottom: m, left: m},
+      width = 1075 - margin.left - margin.right,
+      height = 804 - margin.top - margin.bottom;
+
+  var tree = d3.layout.tree()
+      .size([width, height]);
+
+  var contents = {}
+  d3.json("contents.json", function(json) {
+    contents = json;
+  });
+  
+  var prefixes = {}
+  d3.json("prefixes.json", function(json) {
+    prefixes = json;
+  });
+  
+  var root, nodes;
+  d3.json("tree.json", function(json) {
+    root = json;
+    nodes = tree(root);
+    
+    root.parent = root;
+    root.px = root.x;
+    root.py = root.y;
+    
+    update();
+  });
+
+  var svg = d3.select("#vis").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform", "translate(" + 0 + "," + 0 + ")");
+
+  var node = svg.selectAll(".node"),
+      link = svg.selectAll(".link");
+
+   
+  function update() {
+    drawTree(root.children[0], -1, 100);
+    //drawTree(root.children[1], 1, 100);
+  }  
+  
+  function drawTree(_root, side, offset) {
+    // Recompute the layout and data join.
+    var _nodes = tree.nodes(_root);    
+    node = node.data(_nodes, function(d) { return d.id; });
+    link = link.data(tree.links(_nodes), function(d) { return d.source.id + "-" + d.target.id; });
+
+    var diagonal = d3.svg.diagonal()
+        .projection(function(d) { return [d.y, d.x]; });
+    
+    var nodeEnter = node.enter();  
+
+    nodeEnter.append("circle")
+        .attr("class", "node")
+        .attr("r", 9)
+        .attr("cx", function(d) { return d.parent.py; })
+        .attr("cy", function(d) { return d.parent.px; })
+        .on("click", function(d) {
+          nodeClick(d);
+        });
+    
+    nodeEnter.append("svg:text")
+        .attr("class", "nodetext")
+        .attr("x", function(d) { return d.parent.py + 15; })
+        .attr("y", function(d) { return d.parent.px + 5; })      
+        .text(function(d) { return d.title; })
+
+    // Add entering links in the parent’s old position.
+    link.enter().insert("path", ".node")
+        .attr("class", "link")
+        .attr("d", function(d) {
+          var o = {x: d.source.py * side, y: d.source.px};
+          return diagonal({source: o, target: o});
+        });
+
+    // Transition nodes and links to their new positions.
+    var t = svg.transition()
+        .duration(200);
+
+    t.selectAll(".link")
+        .attr("d", diagonal);
+
+    t.selectAll(".node")
+        .attr("cx", function(d) { return d.py = d.y; })
+        .attr("cy", function(d) { return d.px = d.x; });
+    
+    t.selectAll(".nodetext")
+        .attr("x", function(d) { return d.py = d.y + 15; })
+        .attr("y", function(d) { return d.px = d.x + 5; });  
+  }
+  
+  function nodeClick(d) {
+    if (!d.children) {
+      d.children = [];
+
+      // functie: source from path
+      var source;
+      if (d.path.length == 1) {
+        source = contents.children[d.path[0]]
+      } else if (d.path.length > 1) {
+        if (contents.children[d.path[0]].source.length >= d.path.length - 1) {
+          source = contents.children[d.path[0]].source[d.path.length - 2];
+        }
+      }
+      
+      if (source) {
+        var sparql = source.sparql;
+        var title = source.title;
+        
+        var p = d;
+        while (p.id != 0) {
+          if (p.vars) {
+            sparql = replaceVars(sparql, p.vars);
+          }
+          p = p.parent;
+        } 
+        
+        executeSPARQL(replaceDates(sparql), function(results) {
+          
+          var newChildren = [];
+          for (var i = 0; i < results.length; i++) {
+            var vars = results[i];      
+            var newChild = {
+              id: nodes.length + i,
+              title: replacePrefixes(getVar(source.child_title, vars), prefixes),
+              path: d.path.concat([i]),
+              vars: vars
+            };
+            newChildren.push(newChild);
+          }          
+
+          d.children = newChildren;
+          nodes = nodes.concat(newChildren);
+
+          update();
+
+        });        
+      }      
+    }    
+  }  
+}

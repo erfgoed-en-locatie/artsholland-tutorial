@@ -12,8 +12,8 @@ WHERE {
 
 	?address vcard:locality ?city .
 
-	FILTER (?date >= "2012-11-01"^^xsd:dateTime)
-	FILTER (?date < "2012-11-08"^^xsd:dateTime)
+	FILTER (?date >= "??date_start"^^xsd:dateTime)
+	FILTER (?date < "??date_end"^^xsd:dateTime)
 } 
 GROUP BY ?city
 ORDER BY DESC(?events)

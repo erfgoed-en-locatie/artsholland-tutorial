@@ -1,8 +1,5 @@
-SELECT DISTINCT ?predicate ?range
+SELECT DISTINCT ?predicate
 WHERE {
-	?subject a ah:Event ;
+	?subject a <??class> ;
 		?predicate ?object .
-	OPTIONAL {
-		?predicate rdfs:range ?range .
-	}
-} LIMIT 100
+} LIMIT 25

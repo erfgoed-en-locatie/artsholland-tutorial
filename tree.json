@@ -1,0 +1,19 @@
+{
+  "id": 0,
+	"name": "artsholland",
+	"title": "Arts Holland",
+	"children": [
+		{
+      "id": 1,
+      "name": "content",
+			"title": "Content",
+      "path": [0]
+		},
+		{
+      "id": 2,
+			"name": "model",
+      "title": "Model",
+      "path": [1]
+    }
+  ]
+}

@@ -12,7 +12,9 @@ var sys = require("sys"),
 	dateFormat = require('dateformat'),
 	traverse = require('traverse'),
 	sparql = require('./sparql'),
-	config = require('./config');
+	tree = require('./tree'),
+	prefixes = require('./prefixes'),
+	contents = require('./contents');
 
 mu.root = __dirname + "/templates";
 server.listen(9999);
@@ -63,12 +65,20 @@ app.get("/", function(req, res) {
 	}	
 });
 
-app.get("/sparql", function(req, res) {
-	console.log("vis");
+app.get("/tree.json", function(req, res) {
+	res.writeHead(200, {'Content-Type' : 'application/json'});	
+	res.write(JSON.stringify(tree, undefined, 2));
+	res.end();
 });
 
-app.get("/tree.json", function(req, res) {
-	var configNew = traverse(config).forEach(function (x) {
+app.get("/prefixes.json", function(req, res) {
+	res.writeHead(200, {'Content-Type' : 'application/json'});	
+	res.write(JSON.stringify(prefixes, undefined, 2));
+	res.end();
+});
+
+app.get("/contents.json", function(req, res) {
+	var contentsNew = traverse(contents).forEach(function (x) {
 	    if (typeof x === "string" && x.indexOf("file:") != -1) {
 			var u = this;
 			var filename = x.replace("file:", "");						
@@ -87,8 +97,8 @@ app.get("/tree.json", function(req, res) {
 			}			
 		}
 	});
-	
-	res.write(JSON.stringify(configNew, undefined, 2));
+	res.writeHead(200, {'Content-Type' : 'application/json'});
+	res.write(JSON.stringify(contentsNew, undefined, 2));
 	res.end();	
 });
 

@@ -1,9 +1,8 @@
-# Pak title uit label van klasse (dus uit ontology)
-SELECT DISTINCT (replace(str(?class), "http://purl.org/artsholland/1.0/", "") AS ?label) ?class
+SELECT DISTINCT ?class_label ?class (COUNT(?class) AS ?count)
 WHERE {
-	[] a ?class
-	FILTER (?class = <http://purl.org/artsholland/1.0/Event>
-		|| ?class = <http://purl.org/artsholland/1.0/Venue>
-		|| ?class = <http://purl.org/artsholland/1.0/Production>
-	)
-} LIMIT 3
+	[] a ?class .
+	?class rdfs:label ?class_label .	
+} 
+GROUP BY ?class ?class_label
+ORDER BY DESC(?count)
+LIMIT 5
