@@ -13,8 +13,7 @@ var sys = require("sys"),
 	traverse = require('traverse'),
 	sparql = require('./sparql'),
 	tree = require('./tree'),
-	prefixes = require('./prefixes'),
-	contents = require('./contents');
+	prefixes = require('./prefixes');
 
 mu.root = __dirname + "/templates";
 server.listen(9999);
@@ -26,25 +25,8 @@ function dateFromString(s) {
   var bits = s.replace('.000Z', '').split(/[-T:]/g);
   var d = new Date(bits[0], bits[1]-1, bits[2]);
   d.setHours(bits[3], bits[4], bits[5]);
-
   return d;
 }
-
-
-/*
-fs.readFile('query.sparql', 'utf-8', function (err, data) {
-	if (err) {
-    	console.log("FATAL An error occurred trying to read in the file: " + err);
-		process.exit(-2);
-	}
-	// Make sure there's data before we post it
-	if(data) {
-		executeSparql(data);
-	} else {
-		console.log("No data to post");
-		process.exit(-1);
-	}
-});*/
 
 function render(res, filename) {
 	mu.clearCache();
@@ -65,21 +47,16 @@ app.get("/", function(req, res) {
 	}	
 });
 
-app.get("/tree.json", function(req, res) {
-	res.writeHead(200, {'Content-Type' : 'application/json'});	
-	res.write(JSON.stringify(tree, undefined, 2));
-	res.end();
-});
-
 app.get("/prefixes.json", function(req, res) {
 	res.writeHead(200, {'Content-Type' : 'application/json'});	
 	res.write(JSON.stringify(prefixes, undefined, 2));
 	res.end();
 });
 
-app.get("/contents.json", function(req, res) {
-	var contentsNew = traverse(contents).forEach(function (x) {
-	    if (typeof x === "string" && x.indexOf("file:") != -1) {
+app.get("/tree.json", function(req, res) {
+	// TODO: Only do this once and store results!!
+  var contentsNew = traverse(tree).forEach(function (x) {
+    if (typeof x === "string" && x.indexOf("file:") != -1) {
 			var u = this;
 			var filename = x.replace("file:", "");						
 			if (x.indexOf(".sparql") != -1) {
@@ -103,18 +80,17 @@ app.get("/contents.json", function(req, res) {
 });
 
 function flatten(obj, into	) {
-    into = into || {};
-    for (var k in obj) {
-        if (obj.hasOwnProperty(k)) {
-            var prop = obj[k];
-            if (prop && typeof prop === "object" &&
-                !(prop instanceof Date || prop instanceof RegExp)) {
-                flatten(prop, into, k + "_");
-            }
-            else {
-                into[k] = prop;
-            }
+  into = into || {};
+  for (var k in obj) {
+    if (obj.hasOwnProperty(k)) {
+      var prop = obj[k];
+      if (prop && typeof prop === "object" &&
+        !(prop instanceof Date || prop instanceof RegExp)) {
+            flatten(prop, into, k + "_");
+        } else {
+          into[k] = prop;
         }
-    }
-    return into;
+      }
+  }
+  return into;
 }

@@ -4,6 +4,8 @@ var startVis = function() {
       width = 800 - margin.left - margin.right,
       height = 800 - margin.top - margin.bottom;
       
+  var path = [];
+      
   var tree = d3.layout.tree()
       //.separation(function(a, b) { return a.parent === b.parent ? 2 : 2; })
       .size([height, width]);
@@ -56,17 +58,17 @@ var startVis = function() {
 
   // Load data
 
-  var contents = {}
+  /*var contents = {}
   d3.json("contents.json", function(json) {
     contents = json;
-  });
+  });*/
   
   var prefixes = {}
   d3.json("prefixes.json", function(json) {
     prefixes = json;
   });
   
-  var root;//, nodes;
+  var root;
   d3.json("tree.json", function(json) {
     root = json;
     update();
@@ -74,7 +76,10 @@ var startVis = function() {
    
   function update() {
     drawTree(root.children[0], -1, 50);
-    drawTree(root.children[1], 1, 100);
+    drawTree(root.children[1],  1, 50);
+    
+    //gebruik path om nieuwe datastructuur te grijpen met tekst en sparql en knoppen
+    
   }  
   
   function drawTree(root, side, offset) {
@@ -115,22 +120,24 @@ var startVis = function() {
   }
   
   function nodeClick(d) {
+    path = d.path;
     if (!d.children) {
       d.children = [];
 
       // functie: source from path
       var source;
       if (d.path.length == 1) {
-        source = contents.children[d.path[0]]
+        source = root.children[d.path[0]]
       } else if (d.path.length > 1) {
-        if (contents.children[d.path[0]].source.length >= d.path.length - 1) {
-          source = contents.children[d.path[0]].source[d.path.length - 2];
+        if (root.children[d.path[0]].source.length >= d.path.length - 1) {
+          source = root.children[d.path[0]].source[d.path.length - 2];
         }
       }
       
       if (source) {
         var sparql = source.sparql;
         var title = source.title;
+        var doc = source.doc;
         
         var p = d;
         while (p.parent) {
@@ -147,6 +154,8 @@ var startVis = function() {
             var vars = results[i];      
             var newChild = {
               title: replacePrefixes(getVar(source.child_title, vars), prefixes),
+        			doc: doc,
+        			sparql: sparql,
               path: d.path.concat([i]),
               vars: vars
             };
