@@ -23,11 +23,12 @@
 	<script src="static/js/codemirror/codemirror.js"></script>
 	<script src="static/js/codemirror/sparql.js"></script>
 	<script type="text/x-handlebars-template" id="step-template">
-		<h2>{{title}}</h2>
+		<h2 data-path="{{path}}">{{title}}</h2>
 		{{{doc}}}				
 		{{#if sparql}}
 		<textarea class="sparql">{{sparql}}</textarea>
-	  {{/if}}
+    <p>Results: <span class="result-links">View results in separate window: <a target="_blank" href="{{jsonp_link}}">JSONP</a> | <a target="_blank" href="{{sparql_browser_link}}">SPARQL browser</a></span></p>
+    {{/if}}
 		<ol>
 		{{#each buttons}}
 			<li><button data-path="{{path}}">{{title}}</button></li>

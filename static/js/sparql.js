@@ -1,3 +1,9 @@
+// TODO: create class!!!
+
+//var hostname = "http://api.artsholland.com";
+var hostname = "https://api.ah.waag.org";
+var apiKey = "1e4263ef2d20da8eff6996381bb0d78b";
+
 var xsdDateTime = function(date) {
   function pad(n) {
 	 var s = n.toString();
@@ -36,12 +42,10 @@ var parseSPARQLResults = function(data) {
 };
 
 var executeSPARQL = function(sparql, callback) {
-  //var hostname = "http://api.artsholland.com";
-  var hostname = "https://api.ah.waag.org";
   $.getJSON(hostname + "/sparql.json?callback=?", {
     dataType: "jsonp",
 		query: sparql,
-		api_key: "1e4263ef2d20da8eff6996381bb0d78b"
+		api_key: apiKey
 	},
 	function(data) {
 		callback(parseSPARQLResults(data));
@@ -93,47 +97,17 @@ var replacePrefixes = function(str, prefixes) {
   return str;
 };
 
-// var insertChildren = function(data, node, path, callback) {
-//   // var d = data;
-//   // for (var i = 0; i < path.length; i++) {
-//   //   d = data.children[0];
-//   // }
-//   
-//   var sparql = node.sparql;  
-//   var baseChild = data.children[path[0]].source[path.length - 1];
-//     
-//   executeSPARQL(replaceDates(sparql), function(results) {
-//     console.log(results);
-//     var newChildren = [];
-//     for (var i = 0; i < results.length; i++) {
-//       var vars = results[i];      
-//       var newChild = {
-//         "name": makeName(replaceVars(baseChild.name, vars)),
-//         "title": replaceVars(baseChild.title, vars), 
-//         "doc":  replaceVars(baseChild.doc, vars),
-//         "sparql":  replaceDates(replaceVars(baseChild.sparql, vars)),
-//         "vars": vars,
-//         "children": []
-//       };
-//       newChildren.push(newChild);      
-//     }
-//     callback(newChildren);
-//   });
-//   
-// };
+var removePrefixes = function(sparql) {
+  if (sparql) {
+    return sparql.replace(/^PREFIX.*$/mg,"").trim();
+  }
+};
 
-    
-//     executeSPARQL(element.sparql, function(results) {      
-//       //Fill  data.options[path[0]].options met alle resulataten uit results
-//       
-//       for (var i = 0; i < results.length; i++) {
-//          //data.options[name].options
-//       }
-//       
-// /*      if ("children" in data) {
-//         data.children.push(element);
-//       } else {
-//         data.children = [element];
-//       }*/
-//       update();
-//     });
+var getJSONPLink = function(sparql) {
+  return hostname + "/sparql.json?query=" + encodeURIComponent(sparql) + "&api_key=" + apiKey + "&callback=data&dataType=jsonp";
+};
+
+var getSPARQLBrowserLink = function(sparql) {
+  return hostname + "/sparql?query=" + encodeURIComponent(removePrefixes(sparql)) + "&api_key=" + apiKey + "&selectoutput=browse"; 
+};
+

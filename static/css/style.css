@@ -1,5 +1,5 @@
 body {
-	background-color: #00ABE6;	
+	background-color: rgba(0,171,230,1);	
 	font-size: 14px;
 	font-family: Futura, "Trebuchet MS", Arial, sans-serif;
 	text-rendering: optimizeLegibility;
@@ -13,28 +13,68 @@ body {
 	color: white;
 }
 
-#content {
-  bottom: 0;
-}
 
-#content #vis, #content #doc {
-	width: 50%;
+#vis, #doc {
 	background-color: white;
-	position: relative;
-	bottom: 0;
+	position: absolute;
+	top: 70px;
+  bottom: 0;
+  margin-bottom: 6px;
+  box-shadow:inset 0 0 5px rgba(0,0,0,0.4);
 }
 
-#content #vis {
-	float: left;
+#vis {
+	left: 0;
+  right: 50%;
   overflow: hidden;
+  margin-left: 6px;
+  margin-right: 3px;
 }
 
-#content #doc {
-	float: right;
+.CodeMirror {
+   background-color: #eee;
 }
 
-#content #doc ol {
-	padding-right: 2em;
+#doc {
+	left: 50%;
+  right: 0;
+  overflow: auto;
+  padding: 20px;
+  margin-right: 6px;
+  margin-left: 3px;
+}
+
+#doc ol li.docitem {
+ padding-bottom: 10px;
+}
+
+#doc ol li.docitem:not(:last-child) {
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-bottom-color: rgba(0,171,230,0.3);
+}
+
+#doc ol li:first-child h2 {
+  margin-top: 0;
+}
+
+#doc ol {
+	/*padding-right: 2em;*/
+}
+
+#doc > ol {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+#doc li.docitem .result-links {
+  float: right;
+}
+
+#doc li.docitem .result-links,
+#doc li.docitem .result-links a {
+  color: #888;
 }
 
 /* SVG */
