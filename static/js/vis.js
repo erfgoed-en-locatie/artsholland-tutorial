@@ -9,7 +9,7 @@ var startVis = function() {
   var tree = d3.layout.tree()
       //.separation(function(a, b) { return a.parent === b.parent ? 2 : 2; })
       .size([height, width]);
-      
+        
   var drawarea = d3.select("#vis").append("svg:svg")
       .attr("class","svg_container")
       .attr("width", width)
@@ -24,18 +24,33 @@ var startVis = function() {
   var logo = drawarea   
     .append("svg:g")
       .attr("id","logo");
-  
-      //.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        
+  $("#doc").on('click', 'button', function(event){
+    var path,
+        pathStr = $(this).data("path");
+    
+    if (typeof pathStr === "string") {
+      path = pathStr.split(",").map(function(i){ return parseInt(i); });
+    } else {
+      path = [pathStr];
+    }
+    
+    var d = root;
+    for (var i = 0; i < path.length; i++) {
+      d = d.children[path[i]];
+    }
+    nodeClick(d);
+    
+  });
   
   d3.xml("static/artsholland.svg", "image/svg+xml", function(xml) {    
     $('#logo').append(xml.documentElement)
         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
   });
   
-  
   d3.select("svg")
       .call(d3.behavior.zoom()
-            .scaleExtent([1, 2])
+            .scaleExtent([1, 1])
             .on("zoom", zoom));      
   
   function zoom() {
@@ -54,15 +69,35 @@ var startVis = function() {
           .attr("transform", "translate(" + translation + ")" +
                 " scale(" + scale + ")");
   }
+  
+  // Initialize documentation:
 
+  var stepSource = $("#step-template").html();
+  var stepTemplate = Handlebars.compile(stepSource);  
+  var renderStepTemplate = function(d) {                  
+    var t = {
+      "title": d.title,
+      "doc": d.doc,
+      "sparql": d.sparql ? replaceDates(d.sparql) : null,
+      "buttons": []
+    };
+    
+    if (d.path.length == 0 || d.path.length < root.children[d.path[0]].source.length) {
+      for (var i = 0; i < d.children.length; i++) {  
+        // Add new button:
+        t.buttons.push({
+          title: d.children[i].title,
+          path: d.children[i].path,
+        });            
+      }
+    }
+    return stepTemplate(t);
+  };
+  
+  var doc = d3.select("#doc").append("ol");
 
   // Load data
 
-  /*var contents = {}
-  d3.json("contents.json", function(json) {
-    contents = json;
-  });*/
-  
   var prefixes = {}
   d3.json("prefixes.json", function(json) {
     prefixes = json;
@@ -75,17 +110,41 @@ var startVis = function() {
   });
    
   function update() {
-    drawTree(root.children[0], -1, 50);
-    drawTree(root.children[1],  1, 50);
+    // Update tree
+    updateTree(root.children[0], -1, 50);
+    updateTree(root.children[1],  1, 50);
     
-    //gebruik path om nieuwe datastructuur te grijpen met tekst en sparql en knoppen
+    // Update documentation   
+
+    var docNodes = [root];    
+    var node = root;
+    for (var i = 0; i < path.length; i++) {
+      var node = node.children[path[i]];
+      docNodes.push(node);
+    }
+        
+    var li = doc.selectAll("li.docitem")
+        .html(renderStepTemplate)
+        .data(docNodes, function(d) { return d.path; });
+                
+    li.enter().append("li")
+        .attr("class", "docitem")
+        .html(renderStepTemplate);    
+        
+    li.exit().remove();    
+        
+    $("textarea").each(function(index) {
+      CodeMirror.fromTextArea(this, {
+        //"readOnly": true
+      });    
+    });
     
-  }  
+  }   
   
-  function drawTree(root, side, offset) {
+  function updateTree(startNode, side, offset) {
     // Recompute the layout and data join.
     
-    var nodes = tree.nodes(root);    
+    var nodes = tree.nodes(startNode);    
     
     var elbow = function(d, i) {
       return "M" + (d.source.y / 2 * side + width / 2 + offset * side) + "," + d.source.x
@@ -118,7 +177,7 @@ var startVis = function() {
         });
         
   }
-  
+      
   function nodeClick(d) {
     path = d.path;
     if (!d.children) {
@@ -134,31 +193,53 @@ var startVis = function() {
         }
       }
       
-      if (source) {
-        var sparql = source.sparql;
-        var title = source.title;
-        var doc = source.doc;
+      var next;
+      if (root.children[d.path[0]].source.length >= d.path.length) {
+        next = root.children[d.path[0]].source[d.path.length - 1];
+      }      
+      
+      if (source && next) {
+        var sourceSparql = replaceDates(source.sparql);
         
+        var nextSparql = replaceDates(next.sparql);
+        var nextTitle = next.title;
+        var nextDoc = next.doc;
+
         var p = d;
         while (p.parent) {
           if (p.vars) {
-            sparql = replaceVars(sparql, p.vars);
+            sourceSparql = replaceVars(sourceSparql, p.vars);       
           }
           p = p.parent;
         } 
         
-        executeSPARQL(replaceDates(sparql), function(results) {
+        executeSPARQL(sourceSparql, function(results) {
           
           var newChildren = [];
           for (var i = 0; i < results.length; i++) {
-            var vars = results[i];      
+            var vars = results[i];
+            
+            var childSparql = replaceVars(nextSparql, vars);
+            var childTitle = replaceVars(nextTitle, vars);
+            var childDoc = replaceVars(nextDoc, vars);            
+
+            var p = d;
+            while (p.parent) {
+              if (p.vars) {            
+                childSparql = replaceVars(childSparql, p.vars);
+                childTitle = replaceVars(childTitle, p.vars);
+                childDoc = replaceVars(childDoc, p.vars);            
+              }
+              p = p.parent;
+            }            
+            
             var newChild = {
-              title: replacePrefixes(getVar(source.child_title, vars), prefixes),
-        			doc: doc,
-        			sparql: sparql,
+              title: replacePrefixes(childTitle, prefixes),
+        			doc: childDoc,
+        			sparql: childSparql,
               path: d.path.concat([i]),
               vars: vars
-            };
+            };            
             newChildren.push(newChild);
           }          
 
@@ -166,6 +247,8 @@ var startVis = function() {
           update();
         });        
       }      
-    }    
+    } else {
+      update();
+    }  
   }  
 }

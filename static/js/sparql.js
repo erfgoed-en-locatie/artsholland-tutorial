@@ -53,11 +53,14 @@ var makeName = function(str) {
 };
 
 var replaceDates = function(sparql) {
-  var dateStart = new Date();
-  var dateEnd = new Date(+new Date + 12096e5);  
-  return sparql
-    .replace("??date_start", xsdDateTime(dateStart))
-    .replace("??date_end", xsdDateTime(dateEnd));
+  if (sparql) {
+    var dateStart = new Date();
+    var dateEnd = new Date(+new Date + 12096e5);  
+    return sparql
+      .replace("??date_start", xsdDateTime(dateStart))
+      .replace("??date_end", xsdDateTime(dateEnd));
+  }
+  return sparql;
 }
 
 var getVar = function(vari, obj) {
@@ -70,17 +73,21 @@ var getVar = function(vari, obj) {
 };
 
 var replaceVars = function(str, vars) {
-  for (var v in vars) {
-    str = str.replace("??" + v, vars[v])
+  if (str) {
+    for (var v in vars) {
+      str = str.replace("??" + v, vars[v])
+    }
   }
   return str;
 };
 
 var replacePrefixes = function(str, prefixes) {
-  for (var prefix in prefixes) {
-    var uri = prefixes[prefix];
-    if (str.indexOf(uri) == 0) {
-      return str.replace(uri, prefix + ":");
+  if (str) {
+    for (var prefix in prefixes) {
+      var uri = prefixes[prefix];
+      if (str.indexOf(uri) == 0) {
+        return str.replace(uri, prefix + ":");
+      }
     }
   }
   return str;

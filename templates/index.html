@@ -27,15 +27,14 @@
 		{{{doc}}}				
 		{{#if sparql}}
 		<textarea class="sparql">{{sparql}}</textarea>
-	  	{{/if}}
-		<div class="options">
+	  {{/if}}
+		<ol>
 		{{#each buttons}}
-			<button data-index="{{index}}" data-depth="{{depth}}">{{title}}</button>
+			<li><button data-path="{{path}}">{{title}}</button></li>
 		{{/each}}
-		</div>
+		</ol>
 	</script>
 	<script type="text/javascript" src="static/js/sparql.js"></script>
-	<script type="text/javascript" src="static/js/doc.js"></script>
 	<script type="text/javascript" src="static/js/vis.js"></script>
   <script>
     $(document).ready(function() {

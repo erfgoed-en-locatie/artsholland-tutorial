@@ -1,1 +1,1 @@
-In ?city zijn 'n hoop evenementlocaties. De belangrijkste vind je zo:
+In ??city zijn 'n hoop evenementlocaties. De belangrijkste vind je zo:

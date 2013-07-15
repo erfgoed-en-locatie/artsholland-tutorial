@@ -1,1 +1,1 @@
-En zo zoek je de evenementen die plaatsvinden in de ?title in ?city!
+En zo zoek je de evenementen die plaatsvinden in de ??venue_title in ??city!

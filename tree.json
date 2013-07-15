@@ -1,50 +1,51 @@
 {
 	"title": "Arts Holland",
 	"doc": "file:artsholland.markdown",	
+  "path": [],
 	"children": [
 		{
 			"title": "Content",
 			"doc": "file:content1.markdown",
 			"sparql": "file:content1.sparql",
-      "child_title": "??city",
       "path": [0],
 			"source": [
 				{		
 					"title": "??city",
 					"longtitle": "Events in ??city",
 					"doc": "file:content2.markdown",
-					"sparql": "file:content2.sparql",
-          "child_title": "??venue_title"
+					"sparql": "file:content2.sparql"
 				},
 				{		
-					"title": "Content 3",
+					"title": "??venue_title",
 					"doc": "file:content3.markdown",
-					"sparql": "file:content3.sparql",
-          "child_title": "??production_title"
-				}
+					"sparql": "file:content3.sparql"
+				},
+        {
+          "title": "??production_title"
+        }
 			]
 		},
 		{
       "title": "Model",
 			"doc": "file:model1.markdown",
 			"sparql": "file:model1.sparql",
-      "child_title": "??class_label",
       "path": [1],
 			"source": [
 				{		
 					"title": "??class_label",
           "longtitle": "Events chips chips ??class_label",
 					"doc": "file:model2.markdown",
-					"sparql": "file:model2.sparql",
-          "child_title": "??predicate"
+					"sparql": "file:model2.sparql"
 				},
 				{		
-					"title": "??class_label",
+					"title": "??predicate",
           "longtitle": "Events chips chips ??class_label",
 					"doc": "file:model3.markdown",
-					"sparql": "file:model3.sparql",
-          "child_title": "??property"
-				}
+					"sparql": "file:model3.sparql"
+				},
+        {
+          "title": "??property"
+        }
 			]
 		}
 	]
