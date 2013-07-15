@@ -23,7 +23,7 @@
 	<script src="static/js/codemirror/codemirror.js"></script>
 	<script src="static/js/codemirror/sparql.js"></script>
 	<script type="text/x-handlebars-template" id="step-template">
-		<h2 data-path="{{path}}">{{title}}</h2>
+		<h2 data-path="{{path}}"><span>{{title}}</span></h2>
 		{{{doc}}}				
 		{{#if sparql}}
 		<textarea class="sparql">{{sparql}}</textarea>
@@ -39,7 +39,6 @@
 	<script type="text/javascript" src="static/js/vis.js"></script>
   <script>
     $(document).ready(function() {
-      //startDoc();
       startVis();
     });
     

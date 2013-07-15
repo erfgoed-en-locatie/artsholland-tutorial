@@ -31,7 +31,7 @@ var startVis = function() {
      nodeClick(root.path);
   });
   
-  $("#doc").on('click', "h2", function(event) {
+  $("#doc").on('click', "h2 span", function(event) {
      nodeClick(strToPath($(this).data("path")));
   });
   
@@ -88,7 +88,7 @@ var startVis = function() {
     
     var t = {
       "path": d.path,
-      "title": d.title,
+      "title": d.longtitle,
       "doc": d.doc,
       "sparql": sparql,
       "jsonp_link": getJSONPLink(sparql),
@@ -132,7 +132,11 @@ var startVis = function() {
     updateTree(root.children[0], -1, 50);
     updateTree(root.children[1],  1, 50);
     
+    
     // Update documentation   
+    
+    // Get last scroll position
+    var scrollTop = $("#doc").scrollTop();
 
     var docNodes = [root];    
     var d = root;
@@ -157,9 +161,8 @@ var startVis = function() {
       });    
     });
     
-    
-    $("#doc").animate({ scrollTop: $(document).height() }, "slow");
-
+    $("#doc").scrollTop(scrollTop);
+    $("#doc").animate({ scrollTop: $("#doc ol").height() - $("#doc ol li.docitem:last-child").height() }, "slow");
     
   }   
     
@@ -175,12 +178,6 @@ var startVis = function() {
     
     // Normalize for fixed-depth.
     nodes.forEach(function(d) { d.y = d.depth * 380; });
-    
-    /*var diagonal = function(d, i) {
-      return "M" + (d.source.y / 2 * side + width / 2 + offset * side) + "," + d.source.x
-           + "H" + (d.target.y / 2 * side  + width / 2 + offset * side) + "V" + d.target.x
-           + (d.target.children ? "" : "h" + margin.right);
-    };*/
       
     var sideClass = "left";
     if (side == 1) {
@@ -251,7 +248,6 @@ var startVis = function() {
         .remove();
    
 
-
     // Stash the old positions for transition.
     nodes.forEach(function(d) {
       d.x0 = d.x;
@@ -317,6 +313,7 @@ var startVis = function() {
         
         var nextSparql = replaceDates(next.sparql);
         var nextTitle = next.title;
+        var nextLongTitle = next.longtitle;
         var nextDoc = next.doc;
 
         var p = d;
@@ -335,13 +332,15 @@ var startVis = function() {
             
             var childSparql = replaceVars(nextSparql, vars);
             var childTitle = replaceVars(nextTitle, vars);
+            var childLongTitle = replaceVars(nextLongTitle, vars);
             var childDoc = replaceVars(nextDoc, vars);            
 
             var p = d;
             while (p.parent) {
-              if (p.vars) {            
+              if (p.vars) {         
                 childSparql = replaceVars(childSparql, p.vars);
                 childTitle = replaceVars(childTitle, p.vars);
+                childLongTitle = replaceVars(childLongTitle, p.vars);
                 childDoc = replaceVars(childDoc, p.vars);            
               }
               p = p.parent;
@@ -349,6 +348,7 @@ var startVis = function() {
             
             var newChild = {
               title: replacePrefixes(childTitle, prefixes),
+              longtitle: replacePrefixes(childLongTitle, prefixes),
         			doc: childDoc,
         			sparql: childSparql,
               path: d.path.concat([i]),

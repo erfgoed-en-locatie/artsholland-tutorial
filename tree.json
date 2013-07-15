@@ -1,22 +1,25 @@
 {
 	"title": "Arts Holland",
+	"longtitle": "Arts Holland",
 	"doc": "file:artsholland.markdown",	
   "path": [],
 	"children": [
 		{
 			"title": "Content",
+			"longtitle": "Content",
 			"doc": "file:content1.markdown",
 			"sparql": "file:content1.sparql",
       "path": [0],
 			"source": [
 				{		
 					"title": "??city",
-					"longtitle": "Events in ??city",
+					"longtitle": "Venues in ??city",
 					"doc": "file:content2.markdown",
 					"sparql": "file:content2.sparql"
 				},
 				{		
 					"title": "??venue_title",
+					"longtitle": "Events in ??venue_title",
 					"doc": "file:content3.markdown",
 					"sparql": "file:content3.sparql"
 				},

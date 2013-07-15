@@ -2,13 +2,18 @@ PREFIX ah: <http://purl.org/artsholland/1.0/>
 PREFIX time: <http://www.w3.org/2006/time#>
 PREFIX dc: <http://purl.org/dc/terms/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-SELECT ?production_title (MIN(?date) AS ?date)
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+SELECT ?production_title ?homepage (MIN(?date) AS ?date)
 WHERE {
 	?event ah:venue <??venue> ;
 		time:hasBeginning ?date ;	
 		ah:production ?production .
 	
 	?production	dc:title ?production_title .
+  
+	OPTIONAL {
+		?production foaf:homepage ?homepage .
+	}
 		
 	FILTER (?date >= "??date_start"^^xsd:dateTime)
 	FILTER (?date < "??date_end"^^xsd:dateTime)
@@ -16,6 +21,6 @@ WHERE {
 	FILTER (langMatches(lang(?production_title), "nl"))
 	
 } 
-GROUP BY ?production ?production_title
+GROUP BY ?production ?production_title ?homepage
 ORDER BY ?date
 LIMIT 10

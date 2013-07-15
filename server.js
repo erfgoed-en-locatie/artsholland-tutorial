@@ -20,6 +20,7 @@ server.listen(9999);
 app.use("/static", express.static(__dirname + "/static"));
 
 var graph = {};
+var treeBuilt = false; 
 
 function dateFromString(s) {
   var bits = s.replace('.000Z', '').split(/[-T:]/g);
@@ -54,28 +55,30 @@ app.get("/prefixes.json", function(req, res) {
 });
 
 app.get("/tree.json", function(req, res) {
-	// TODO: Only do this once and store results!!
-  var contentsNew = traverse(tree).forEach(function (x) {
-    if (typeof x === "string" && x.indexOf("file:") != -1) {
-			var u = this;
-			var filename = x.replace("file:", "");						
-			if (x.indexOf(".sparql") != -1) {
-				var useMarkdown = false;
-				filename = "sparql/" + filename;
-			} else if (x.indexOf(".markdown") != -1) {
-				var useMarkdown = true;
-				filename = "doc/" + filename;
-			}			
-			var content = fs.readFileSync(filename, 'utf8');			
-			if (useMarkdown) {
-				this.update(md(content, true));
-			} else {
-				this.update(content);						
-			}			
-		}
-	});
+  if (!treeBuilt) {
+    tree = traverse(tree).forEach(function (x) {
+      if (typeof x === "string" && x.indexOf("file:") != -1) {
+  			var u = this;
+  			var filename = x.replace("file:", "");						
+  			if (x.indexOf(".sparql") != -1) {
+  				var useMarkdown = false;
+  				filename = "sparql/" + filename;
+  			} else if (x.indexOf(".markdown") != -1) {
+  				var useMarkdown = true;
+  				filename = "doc/" + filename;
+  			}			
+  			var content = fs.readFileSync(filename, 'utf8');			
+  			if (useMarkdown) {
+  				this.update(md(content, true));
+  			} else {
+  				this.update(content);						
+  			}			
+  		}
+  	});
+    treeBuilt = true;
+  }
 	res.writeHead(200, {'Content-Type' : 'application/json'});
-	res.write(JSON.stringify(contentsNew, undefined, 2));
+	res.write(JSON.stringify(tree, undefined, 2));
 	res.end();	
 });
 

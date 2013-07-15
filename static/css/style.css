@@ -33,6 +33,7 @@ body {
 
 .CodeMirror {
    background-color: #eee;
+   padding: 3px;
 }
 
 #doc {
@@ -75,6 +76,7 @@ body {
 #doc li.docitem .result-links,
 #doc li.docitem .result-links a {
   color: #888;
+  font-size: 85%;
 }
 
 /* SVG */
@@ -85,6 +87,11 @@ body {
 	stroke-width: 1.5px;
 }
 
+#vis .node, 
+.docitem h2 span,
+#artsholland_logo {
+  cursor: pointer;
+}
 
 
 
