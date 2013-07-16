@@ -3,21 +3,35 @@ body {
 	font-size: 14px;
 	font-family: Futura, "Trebuchet MS", Arial, sans-serif;
 	text-rendering: optimizeLegibility;
+  margin: 0;
+  padding: 0;
 }
 
 .hidden {
   display: none;
 }
 
-#header h1 {
-	color: white;
+a, a:visited {
+  color: black;
 }
 
+.docitem table a {
+  text-decoration: none;
+}
+
+.docitem table a:hover {
+  text-decoration: underline;
+}
+
+#header h1 {
+	color: white;
+  margin: 6px;
+}
 
 #vis, #doc {
 	background-color: white;
 	position: absolute;
-	top: 70px;
+	top: 50px;
   bottom: 0;
   margin-bottom: 6px;
   box-shadow:inset 0 0 5px rgba(0,0,0,0.4);
@@ -29,6 +43,12 @@ body {
   overflow: hidden;
   margin-left: 6px;
   margin-right: 3px;
+}
+
+#vis .node, 
+.docitem h2 span,
+#vis .logo {
+  cursor: pointer;
 }
 
 .CodeMirror {
@@ -43,6 +63,11 @@ body {
   padding: 20px;
   margin-right: 6px;
   margin-left: 3px;
+}
+
+#doc table td {
+  vertical-align: middle;
+  padding: 3px;
 }
 
 #doc ol li.docitem {
@@ -79,19 +104,29 @@ body {
   font-size: 85%;
 }
 
+.subtitle {
+  color: #888;
+  fill: #888;
+  font-size: 85%;
+}
+
+#vis .title {
+  font-size: 120%;
+}
+
 /* SVG */
 
 .link {
 	fill: none;
-	stroke: #CCC;
-	stroke-width: 1.5px;
+	stroke: rgba(200, 200, 200, .8);
+	stroke-width: 1px;
 }
 
-#vis .node, 
-.docitem h2 span,
-#artsholland_logo {
-  cursor: pointer;
+#triangle,
+#circle-marker {
+  fill: #00ABE6;
 }
+
 
 
 

@@ -23,23 +23,42 @@
 	<script src="static/js/codemirror/codemirror.js"></script>
 	<script src="static/js/codemirror/sparql.js"></script>
 	<script type="text/x-handlebars-template" id="step-template">
-		<h2 data-path="{{path}}"><span>{{title}}</span></h2>
+		<h2><span data-path="{{path}}">{{title}}</span></h2>
 		{{{doc}}}				
 		{{#if sparql}}
 		<textarea class="sparql">{{sparql}}</textarea>
     <p>Results: <span class="result-links">View results in separate window: <a target="_blank" href="{{jsonp_link}}">JSONP</a> | <a target="_blank" href="{{sparql_browser_link}}">SPARQL browser</a></span></p>
     {{/if}}
-		<ol>
-		{{#each buttons}}
-			<li><button data-path="{{path}}">{{title}}</button></li>
+		<table>
+		{{#each results}}
+			<tr data-path="{{path}}">        
+        <td>
+          <svg width="10" height="10">
+            <use xlink:href="static/triangle.svg#triangle"/>
+          </svg>
+        </td>
+        <td>
+          {{#if ../use_buttons}}
+          <a href="#">{{title}}</a>
+          {{else}}
+          <span>{{title}}</span>
+          {{/if}}
+          <span class="subtitle">{{subtitle}}</span>        
+        </td>
+      </tr>
 		{{/each}}
-		</ol>
+		</table>
 	</script>
 	<script type="text/javascript" src="static/js/sparql.js"></script>
 	<script type="text/javascript" src="static/js/vis.js"></script>
   <script>
+    var vis;  
     $(document).ready(function() {
-      startVis();
+      vis = new Vis();
+    });
+    
+    $(window).resize(function() {
+      vis.resize()
     });
     
     

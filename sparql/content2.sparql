@@ -3,27 +3,29 @@ PREFIX time: <http://www.w3.org/2006/time#>
 PREFIX dc: <http://purl.org/dc/terms/>
 PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-SELECT ?venue_title ?venue ?events
+SELECT ?venue_title ?venue ?street_address ?postal_code (COUNT(?production) AS ?productions)
 WHERE {
 	?venue dc:title ?venue_title ;
-	FILTER (langMatches(lang(?venue_title), "nl"))   
-	{
-		SELECT DISTINCT ?venue (COUNT(?event) AS ?events)
+	FILTER (langMatches(lang(?venue_title), "nl"))
+  {
+		SELECT DISTINCT ?venue ?production ?street_address ?postal_code
 		WHERE {
 			?venue a ah:Venue ;
 				ah:locationAddress ?address .	
-			?address vcard:locality "??city" .
+			?address vcard:locality "??city" ;
+				vcard:street-address ?street_address ;
+				vcard:postal-code ?postal_code .
 	
 			?event a ah:Event ;
 				ah:venue ?venue ;
-				time:hasBeginning ?date .
+				ah:production ?production ;
+				time:hasBeginning ?date .			
 
-			FILTER (?date >= "??date_start"^^xsd:dateTime)
-			FILTER (?date < "??date_end"^^xsd:dateTime)
-		} 
-		GROUP BY ?venue 
-		ORDER BY DESC(?events)
-		LIMIT 8
-  }
+      FILTER (?date >= "??date_start"^^xsd:dateTime)
+      FILTER (?date < "??date_end"^^xsd:dateTime)
+		}
+	}	
 }
-ORDER BY DESC(?events)
+GROUP BY ?venue ?venue_title ?street_address ?postal_code
+ORDER BY DESC(?productions)
+LIMIT 8

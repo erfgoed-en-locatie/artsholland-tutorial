@@ -14,35 +14,40 @@
 				{		
 					"title": "??city",
 					"longtitle": "Venues in ??city",
+          "subtitle": "??events events",
 					"doc": "file:content2.markdown",
 					"sparql": "file:content2.sparql"
 				},
 				{		
 					"title": "??venue_title",
 					"longtitle": "Events in ??venue_title",
+          "subtitle": "??street_address",
 					"doc": "file:content3.markdown",
 					"sparql": "file:content3.sparql"
 				},
         {
-          "title": "??production_title"
+          "title": "??production_title",
+          "subtitle": "??date"
         }
 			]
 		},
 		{
       "title": "Model",
+      "longtitle": "Model",
 			"doc": "file:model1.markdown",
 			"sparql": "file:model1.sparql",
       "path": [1],
 			"source": [
 				{		
 					"title": "??class_label",
-          "longtitle": "Events chips chips ??class_label",
+          "longtitle": "??class_label predicates",
+          "subtitle": "??count objects",
 					"doc": "file:model2.markdown",
 					"sparql": "file:model2.sparql"
 				},
 				{		
 					"title": "??predicate",
-          "longtitle": "Events chips chips ??class_label",
+          "longtitle": "??predicate domain and range",
 					"doc": "file:model3.markdown",
 					"sparql": "file:model3.sparql"
 				},

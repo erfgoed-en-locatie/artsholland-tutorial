@@ -4,6 +4,9 @@
 var hostname = "https://api.ah.waag.org";
 var apiKey = "1e4263ef2d20da8eff6996381bb0d78b";
 
+var week = 6048e5;
+var duration = week * 1;
+
 var xsdDateTime = function(date) {
   function pad(n) {
 	 var s = n.toString();
@@ -13,9 +16,6 @@ var xsdDateTime = function(date) {
   var yyyy = date.getFullYear();
   var mm   = pad(date.getMonth()+1);
   var dd   = pad(date.getDate());
-  //var hh   = pad(date.getHours());
-  //var mm2  = pad(date.getMinutes());
-  //var ss   = pad(date.getSeconds());
 
   return yyyy + '-' + mm + '-' + dd; // +'T' +hh +':' +mm2 +':' +ss;
 }
@@ -59,7 +59,7 @@ var makeName = function(str) {
 var replaceDates = function(sparql) {
   if (sparql) {
     var dateStart = new Date();
-    var dateEnd = new Date(+new Date + 12096e5);  
+    var dateEnd = new Date(+new Date + duration);  
     return sparql
       .replace("??date_start", xsdDateTime(dateStart))
       .replace("??date_end", xsdDateTime(dateEnd));
@@ -74,6 +74,14 @@ var getVar = function(vari, obj) {
     }
   }  
   return null;
+};
+
+var formatDateTime = function(str) {
+  if (str) {
+    var regex = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})Z/;
+    return str.replace(regex, "$3-$2-$1 $4:$5");
+  }
+  return str;
 };
 
 var replaceVars = function(str, vars) {

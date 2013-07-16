@@ -2,4 +2,4 @@ SELECT DISTINCT ?predicate
 WHERE {
 	?subject a <??class> ;
 		?predicate ?object .
-} LIMIT 25
+} LIMIT 15
