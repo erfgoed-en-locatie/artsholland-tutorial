@@ -1,5 +1,19 @@
-SELECT DISTINCT ?predicate
-WHERE {
-	?subject a <??class> ;
-		?predicate ?object .
-} LIMIT 15
+SELECT ?predicate
+  ?p_type ?p_label 
+  ?p_domain ?p_range
+WHERE {	
+	OPTIONAL {
+		?predicate rdf:type ?p_type ;
+			rdfs:label ?p_label ;
+			rdfs:domain ?p_domain ;
+			rdfs:range ?p_range .	
+	}
+	{
+  	SELECT DISTINCT ?predicate
+  	WHERE {
+  		?subject a <http://purl.org/artsholland/1.0/Production> ;
+  			?predicate ?object .		
+  	} 
+    LIMIT 15
+	}
+}

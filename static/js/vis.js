@@ -3,7 +3,7 @@ function Vis() {
   // TODO: implement?? http://bl.ocks.org/mbostock/4063550
   
   var width = 1200,
-      height = 500,
+      height = 800,
       offset = {x: 0, y: 0}; // Offset of center. Used to move tree to 'active' nodes when clicked.
       
   var path = [];
@@ -334,8 +334,8 @@ function Vis() {
        .attr("transform", function(d) {
          var titleWidth = $(".title", this.parentNode)[0].getBBox().width;
          
-         var rotate = "rotate(" + (side > 0 ? 0 : 180) + " 5,5)";
-         var translate = "translate(" + ((titleWidth + 5) * side - (side > 0 ? 0 : 10)) + "," + (-6) + ")";
+         var rotate = "rotate(" + (side > 0 ? 0 : 180) + " 7,9)";
+         var translate = "translate(" + ((titleWidth + 3) * side - (side > 0 ? 0 : 13)) + "," + (-9) + ")";
          
          return translate + " " + rotate;
         

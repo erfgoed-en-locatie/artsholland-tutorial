@@ -47,13 +47,8 @@
 				},
 				{		
 					"title": "??predicate",
-          "longtitle": "??predicate domain and range",
-					"doc": "file:model3.markdown",
-					"sparql": "file:model3.sparql"
-				},
-        {
-          "title": "??property"
-        }
+          "subtitle": "??p_label: ??p_range"					
+				}
 			]
 		}
 	]
