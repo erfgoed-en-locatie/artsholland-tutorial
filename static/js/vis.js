@@ -75,7 +75,7 @@ function Vis() {
       .attr("y2", 0);  
   
   var logo = drawarea.append("svg:g")
-      .attr("class","logo");        
+      .attr("class","logo clickable");
 
   $("#vis").on('click', ".logo", function(event){
      nodeClick(root.path);
@@ -301,18 +301,26 @@ function Vis() {
         .data(nodes, function(d) { return d.path; });
 
     var nodeEnter = node.enter().append("g")
-        .attr("class", "node")
+        .attr("class", function(d) {
+          if (d.path.length <= root.children[d.path[0]].source.length) {
+            return "node clickable";
+          } else {
+            return "node";
+          }            
+        })
         .attr("data-path", function(d) { return d.path })
         .attr("data-depth", function(d) { return d.depth })
         .attr("transform", function(d) { return "translate(" + translateX(d.y0, side) + "," + translateY(d.x0) + ")";})
-        .on("click", function(d) {
-          if (d.children) {
-            nodeClick(d.path.slice(0, d.path.length - 1));
-          } else {
-            nodeClick(d.path);
+        .on("click", function(d) {          
+          if (d.path.length <= root.children[d.path[0]].source.length) {
+            if (d.children) {
+              nodeClick(d.path.slice(0, d.path.length - 1));
+            } else {
+              nodeClick(d.path);
+            }
           }
         });
-    
+        
     nodeEnter.append("text")
         .attr("class", "title")
         .attr("x", 0)
@@ -366,7 +374,10 @@ function Vis() {
         .style("fill-opacity", 1);
         
     nodeUpdate.selectAll("use")    
-        .style("display", function(d) { return !(d.children || (d.path.length > 0 && d.path.length > root.children[d.path[0]].source.length)) ? null : "none"; });
+        .style("display", function(d) { 
+          // TODO: make function isLast(d) or something similar!
+          return !(d.children || (d.path.length > 0 && d.path.length > root.children[d.path[0]].source.length)) ? null : "none"; 
+        });
 
     // Transition exiting nodes to the parent's new position.
     var nodeExit = node.exit().transition()
@@ -462,8 +473,7 @@ function Vis() {
       d = d.children[path[i]];            
     }
     
-    if (!d.children) {
-      setSpinners(true);
+    if (!d.children) {      
       
       d.children = [];
 
@@ -483,6 +493,8 @@ function Vis() {
       }      
       
       if (source && next) {
+        setSpinners(true);
+        
         var sourceSparql = replaceDates(source.sparql);
         
         var nextSparql = replaceDates(next.sparql);

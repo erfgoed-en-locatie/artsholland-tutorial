@@ -22,7 +22,11 @@
 	<script src="static/js/codemirror/codemirror.js"></script>
 	<script src="static/js/codemirror/sparql.js"></script>
 	<script type="text/x-handlebars-template" id="step-template">
+		{{#if use_buttons}}
+		<h2><span data-path="{{path}}" class="clickable">{{title}}</span></h2>
+    {{else}}
 		<h2><span data-path="{{path}}">{{title}}</span></h2>
+    {{/if}}
 		{{{doc}}}				
 		{{#if sparql}}
 		<textarea class="sparql">{{sparql}}</textarea>
@@ -30,11 +34,19 @@
     {{/if}}
 		<table>
 		{{#each results}}
-			<tr data-path="{{path}}">        
-        <td>
+      {{#if ../use_buttons}}
+			<tr data-path="{{path}}" class="clickable">
+      {{else}}
+			<tr data-path="{{path}}">
+      {{/if}}
+        <td>          
           <svg width="16" height="16">
+            {{#if ../use_buttons}}
             <use xlink:href="static/triangle.svg#triangle"/>
-          </svg>
+            {{else}}
+            <use xlink:href="static/circle.svg#circle"/>
+            {{/if}}
+          </svg>          
         </td>
         <td>
           {{#if ../use_buttons}}

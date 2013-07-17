@@ -45,10 +45,13 @@ a, a:visited {
   margin-right: 3px;
 }
 
-#vis .node, 
-#vis .logo,
+/*
 .docitem h2 span,
 .docitem tr {
+  cursor: pointer;
+}*/
+
+.clickable {
   cursor: pointer;
 }
 
@@ -124,7 +127,8 @@ a, a:visited {
 }
 
 #triangle,
-#circle-marker {
+#circle-marker,
+#circle {
   fill: #00ABE6;
 }
 
