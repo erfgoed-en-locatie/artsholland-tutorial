@@ -3,34 +3,16 @@ function Vis() {
   // TODO: implement?? http://bl.ocks.org/mbostock/4063550
   
   var width = 1200,
-      height = 800;
+      height = 500,
+      offset = {x: 0, y: 0}; // Offset of center. Used to move tree to 'active' nodes when clicked.
       
   var path = [];
   
   var duration = 400;
   
-  var subTreeX = 100;
+  var subTreeX = 75;
   var linkSpacing = 20;
-      
-  var spinnerOpts = {
-    lines: 9, // The number of lines to draw
-    length: 3, // The length of each line
-    width: 2, // The line thickness
-    radius: 3, // The radius of the inner circle
-    corners: 1, // Corner roundness (0..1)
-    rotate: 0, // The rotation offset
-    direction: 1, // 1: clockwise, -1: counterclockwise
-    color: '#00ABE6', // #rgb or #rrggbb
-    speed: 1, // Rounds per second
-    trail: 50, // Afterglow percentage
-    shadow: false, // Whether to render a shadow
-    hwaccel: false, // Whether to use hardware acceleration
-    className: 'spinner', // The CSS class to assign to the spinner
-    zIndex: 2e9, // The z-index (defaults to 2000000000)
-    top: 'auto', // Top position relative to parent in px
-    left: 'auto' // Left position relative to parent in px
-  };
-  
+        
   var tree = d3.layout.tree()
       //.separation(function(a, b) { return a.parent === b.parent ? 2 : 2; })
       .size([height, width]);
@@ -38,7 +20,7 @@ function Vis() {
   var svg = d3.select("#vis").append("svg:svg")
       .attr("width", "100%")
       .attr("height", "100%")
-      .style("overflow", "scroll");
+      .style("overflow", "scroll")
   
       // <svg id="triangle" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="10" height="10">
       //   <polygon points="0,10 10,5 0,0" />
@@ -55,11 +37,14 @@ function Vis() {
     .append("circle")    
       .attr("cx", 0)
       .attr("cy", 0)
-      .attr("r", 5);      
-  
-  var drawarea = svg.append("svg:g")
-      .attr("id","drawarea")
+      .attr("r", 5);
+
+  var center = svg.append("svg:g")
+      .attr("id","center")
       .attr("transform", "translate(" + $("#vis").width() / 2 + "," + $("#vis").height() / 2  + ")");
+  
+  var drawarea = center.append("svg:g")
+      .attr("id","drawarea");
           
   drawarea.append("svg:g")
       .attr("class","left")
@@ -75,18 +60,18 @@ function Vis() {
       .attr("class", "link")
       .attr("marker-start", "url(#circle-marker")
       .attr("marker-end", "url(#circle-marker")
-      .attr("x1", -subTreeX + linkSpacing)
+      .attr("x1", -subTreeX + linkSpacing - 8)
       .attr("y1", 0)
-      .attr("x2", -18 - linkSpacing) // width of logo + linkSpacing
+      .attr("x2", -18 - linkSpacing + 7) // width of logo + linkSpacing
       .attr("y2", 0);
 
   drawarea.append("line")
       .attr("class", "link")
       .attr("marker-start", "url(#circle-marker")
       .attr("marker-end", "url(#circle-marker")
-      .attr("x1", subTreeX - linkSpacing)
+      .attr("x1", subTreeX - linkSpacing + 8)
       .attr("y1", 0)
-      .attr("x2", 18 + linkSpacing) // width of logo + linkSpacing
+      .attr("x2", 18 + linkSpacing - 7) // width of logo + linkSpacing
       .attr("y2", 0);  
   
   var logo = drawarea.append("svg:g")
@@ -125,13 +110,13 @@ function Vis() {
   
   d3.select("svg")
       .call(d3.behavior.zoom()
-            .scaleExtent([1, 1])
-            .on("zoom", zoom));      
+          .scaleExtent([1, 1])
+          .on("zoom", zoom));      
   
   // TODO: also make classes from other functions and sparql.js 
   this.resize = function() {
-    $("#drawarea")
-        .attr("transform", "translate(" + $("#vis").width() / 2 + "," + $("#vis").height() / 2  + ")");
+    $("#center")
+        .attr("transform", "translate(" + ($("#vis").width() / 2 + offset.x) + "," + ($("#vis").height() / 2 + offset.y)  + ")");
   }
   
   function zoom() {
@@ -148,7 +133,7 @@ function Vis() {
       ];
       d3.select("#drawarea")
           .attr("transform", "translate(" + translation + ")" +
-                " scale(" + scale + ")");
+              " scale(" + scale + ")");
   }
   
   // Initialize documentation:
@@ -219,13 +204,14 @@ function Vis() {
       docNodes.push(d);
     }
         
-    var li = doc.selectAll("li.docitem")
-        .html(renderStepTemplate)
+    var li = doc.selectAll("li.docitem")        
         .data(docNodes, function(d) { return d.path; });
                 
     li.enter().append("li")
         .attr("class", "docitem")
-        .html(renderStepTemplate);    
+        .html(renderStepTemplate);
+        
+    li.html(renderStepTemplate);
         
     li.exit().remove();
         
@@ -320,19 +306,20 @@ function Vis() {
         .attr("data-depth", function(d) { return d.depth })
         .attr("transform", function(d) { return "translate(" + translateX(d.y0, side) + "," + translateY(d.x0) + ")";})
         .on("click", function(d) {
-          nodeClick(d.path);
+          if (d.children) {
+            nodeClick(d.path.slice(0, d.path.length - 1));
+          } else {
+            nodeClick(d.path);
+          }
         });
-
-    nodeEnter.append("text")
     
     nodeEnter.append("text")
         .attr("class", "title")
         .attr("x", 0)
-        .attr("y", ".2em")
+        .attr("y", ".28em")
         .style("fill-opacity", 1e-6)
         .text(function(d) { return d.title; })
         .attr("text-anchor", function(d) { return side > 0 ? "begin": "end"; });
-
         
     nodeEnter.append("text")
         .attr("class", "subtitle")
@@ -341,7 +328,23 @@ function Vis() {
         .style("fill-opacity", 1e-6)
         .text(function(d) { return d.subtitle; })
         .attr("text-anchor", function(d) { return side > 0 ? "begin": "end"; });
-    
+  
+     nodeEnter.append("svg:use")
+       .attr("xlink:href", "static/triangle.svg#triangle")
+       .attr("transform", function(d) {
+         var titleWidth = $(".title", this.parentNode)[0].getBBox().width;
+         
+         var rotate = "rotate(" + (side > 0 ? 0 : 180) + " 5,5)";
+         var translate = "translate(" + ((titleWidth + 5) * side - (side > 0 ? 0 : 10)) + "," + (-6) + ")";
+         
+         return translate + " " + rotate;
+        
+       });
+        
+    // Compute center offset 
+    //midden van :
+    //  rechterkant van node met: data-depth = path.length
+    //  linkerkant van node met: data-depth = path.length - 1
       
     // Transition nodes to their new position.
     var nodeUpdate = node.transition()
@@ -361,6 +364,9 @@ function Vis() {
 
     nodeUpdate.selectAll("text")
         .style("fill-opacity", 1);
+        
+    nodeUpdate.selectAll("use")    
+        .style("display", function(d) { return !(d.children || (d.path.length > 0 && d.path.length > root.children[d.path[0]].source.length)) ? null : "none"; });
 
     // Transition exiting nodes to the parent's new position.
     var nodeExit = node.exit().transition()
@@ -408,14 +414,18 @@ function Vis() {
                 
   }
   
-  function setSpinners(enabled) {        
-    var td = $("tr[data-path='" + path + "'] td:first-child");
-    if (enabled) {
-      $("svg", td).hide();
-      var spinner = new Spinner(spinnerOpts).spin(td[0]);      
-    } else {
-      $("svg", td).show();
-    }  
+  function setSpinners(enabled) { 
+    if (path.length) {       
+      var docSpinner = $("#doc tr[data-path='" + path + "'] td:first-child use");
+      var visSpinner = $("#vis .node[data-path='" + path + "'] use");    
+      if (enabled) {      
+        docSpinner.attr("xlink:href", "static/spinner.svg#spinner");
+        visSpinner.attr("href", "static/spinner.svg#spinner");
+      } else {
+        docSpinner.attr("xlink:href", "static/triangle.svg#triangle");
+        visSpinner.attr("href", "static/triangle.svg#triangle");
+      }  
+    }
   }
   
   function collapse(d) {
@@ -438,9 +448,7 @@ function Vis() {
       
   function nodeClick(_path) {    
     path = _path;
-    
-    setSpinners(true);
-    
+        
     // Collapse both Content and Model trees:
     collapse(root.children[0]);
     collapse(root.children[1]);
@@ -455,6 +463,8 @@ function Vis() {
     }
     
     if (!d.children) {
+      setSpinners(true);
+      
       d.children = [];
 
       // functie: source from path

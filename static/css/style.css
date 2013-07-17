@@ -46,8 +46,9 @@ a, a:visited {
 }
 
 #vis .node, 
+#vis .logo,
 .docitem h2 span,
-#vis .logo {
+.docitem tr {
   cursor: pointer;
 }
 
@@ -127,6 +128,13 @@ a, a:visited {
   fill: #00ABE6;
 }
 
-
+#spinner line {
+  fill: none;
+  stroke-width: 10;
+  stroke: #00ABE6;
+  stroke-miterlimit: 10;  
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 
 

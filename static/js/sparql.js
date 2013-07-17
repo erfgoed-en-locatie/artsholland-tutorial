@@ -5,7 +5,7 @@ var hostname = "https://api.ah.waag.org";
 var apiKey = "1e4263ef2d20da8eff6996381bb0d78b";
 
 var week = 6048e5;
-var duration = week * 1;
+var duration = week * 2;
 
 var xsdDateTime = function(date) {
   function pad(n) {

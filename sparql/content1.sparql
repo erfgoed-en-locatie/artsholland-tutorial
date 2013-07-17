@@ -17,4 +17,4 @@ WHERE {
 } 
 GROUP BY ?city
 ORDER BY DESC(?events)
-LIMIT 4
+LIMIT 5
