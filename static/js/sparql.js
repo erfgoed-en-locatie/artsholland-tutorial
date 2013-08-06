@@ -59,7 +59,7 @@ var makeName = function(str) {
 var replaceDates = function(sparql) {
   if (sparql) {
     var dateStart = new Date();
-    var dateEnd = new Date(+new Date + duration);  
+    var dateEnd = new Date(+new Date() + duration);  
     return sparql
       .replace("??date_start", xsdDateTime(dateStart))
       .replace("??date_end", xsdDateTime(dateEnd));
@@ -79,7 +79,12 @@ var getVar = function(vari, obj) {
 var formatDateTime = function(str) {
   if (str) {
     var regex = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})Z/;
-    return str.replace(regex, "$3-$2-$1 $4:$5");
+    if (str.match(regex)) {
+      //return str.replace(regex, "$3-$2-$1 $4:$5");
+    
+      return moment(str).calendar()
+    }
+    
   }
   return str;
 };

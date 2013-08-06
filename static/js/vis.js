@@ -1,8 +1,8 @@
 function Vis() { 
 
-  // TODO: implement?? http://bl.ocks.org/mbostock/4063550
+  // TODO: also implement?? http://bl.ocks.org/mbostock/4063550
   
-  var width = 1200,
+  var width = 1400,
       height = 800,
       offset = {x: 0, y: 0}; // Offset of center. Used to move tree to 'active' nodes when clicked.
       
@@ -14,18 +14,13 @@ function Vis() {
   var linkSpacing = 20;
         
   var tree = d3.layout.tree()
-      //.separation(function(a, b) { return a.parent === b.parent ? 2 : 2; })
       .size([height, width]);
         
   var svg = d3.select("#vis").append("svg:svg")
       .attr("width", "100%")
       .attr("height", "100%")
       .style("overflow", "scroll")
-  
-      // <svg id="triangle" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="10" height="10">
-      //   <polygon points="0,10 10,5 0,0" />
-      // </svg>
-  
+    
   svg.append("defs").append("marker")
       .attr("id", "circle-marker")
       .attr("refX", 0)
@@ -120,20 +115,20 @@ function Vis() {
   }
   
   function zoom() {
-      var scale = d3.event.scale,
-          translation = d3.event.translate,
-          tbound = -height * scale,
-          bbound = height * scale,
-          lbound = (-width) * scale,
-          rbound = (width) * scale;
-      // limit translation to thresholds
-      translation = [
-          Math.max(Math.min(translation[0], rbound), lbound),
-          Math.max(Math.min(translation[1], bbound), tbound)
-      ];
-      d3.select("#drawarea")
-          .attr("transform", "translate(" + translation + ")" +
-              " scale(" + scale + ")");
+    // TODO: use current tree size when calculating bounds
+    var scale = d3.event.scale,
+        translation = d3.event.translate,
+        tbound = -height * scale,
+        bbound = height * scale,
+        lbound = (-width) * scale,
+        rbound = (width) * scale;
+    // limit translation to thresholds
+    translation = [
+      Math.max(Math.min(translation[0], rbound), lbound),
+      Math.max(Math.min(translation[1], bbound), tbound)
+    ];
+    d3.select("#drawarea")
+        .attr("transform", "translate(" + translation + ")" + " scale(" + scale + ")");
   }
   
   // Initialize documentation:
@@ -324,7 +319,7 @@ function Vis() {
     nodeEnter.append("text")
         .attr("class", "title")
         .attr("x", 0)
-        .attr("y", ".28em")
+        .attr("y", ".36em")
         .style("fill-opacity", 1e-6)
         .text(function(d) { return d.title; })
         .attr("text-anchor", function(d) { return side > 0 ? "begin": "end"; });
@@ -332,7 +327,7 @@ function Vis() {
     nodeEnter.append("text")
         .attr("class", "subtitle")
         .attr("x", 0)
-        .attr("y", "1.7em")
+        .attr("y", "2em")
         .style("fill-opacity", 1e-6)
         .text(function(d) { return d.subtitle; })
         .attr("text-anchor", function(d) { return side > 0 ? "begin": "end"; });
@@ -387,7 +382,7 @@ function Vis() {
         })
         .remove();
 
-    nodeExit.select("text")
+    nodeExit.selectAll("text")
         .style("fill-opacity", 1e-6);
                   
     // Update the links…

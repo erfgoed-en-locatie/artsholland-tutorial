@@ -3,12 +3,18 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Developing Arts Holland - Visualized</title>
+    <link type="image/x-icon" href="static/favicon.ico" rel="shortcut icon">
 		<link href="static/css/style.css" rel="stylesheet" type="text/css">
 		<link rel="stylesheet" href="static/css/codemirror/codemirror.css">
 	</head>
 	<body>
 		<div id="header">
-			<h1>Developing Arts Holland - Visualized</h1>
+      <div id="header-text">
+			  <h1>Developing Arts Holland - Visualized</h1><h2>Interactive SPARQL tutorial and data browser</h2>
+      </div>
+      <div id="header-logo">
+        <a href="http://www.waag.org/"><img src="static/waag.png" /></a>
+      </div>
 		</div>
 		<div id="content">
 			<div id="vis">			  
@@ -19,6 +25,7 @@
 	<script type="text/javascript" src="static/js/jquery-2.0.0.min.js"></script>
   <script type="text/javascript" src="static/js/d3.v3.js"></script>
 	<script type="text/javascript" src="static/js/handlebars.js"></script>
+	<script src="static/js/moment.min.js"></script>
 	<script src="static/js/codemirror/codemirror.js"></script>
 	<script src="static/js/codemirror/sparql.js"></script>
 	<script type="text/x-handlebars-template" id="step-template">
@@ -63,6 +70,16 @@
 	<script type="text/javascript" src="static/js/sparql.js"></script>
 	<script type="text/javascript" src="static/js/vis.js"></script>
   <script>
+  
+    moment.lang('en', {
+      calendar : {
+          sameDay : '[Today at] LT',
+          nextDay : '[Tomorrow at] LT',
+          nextWeek : 'dddd [at] LT',
+          sameElse : 'dddd MMMM Mo [at] LT'
+      }
+    });
+  
     var vis;  
     $(document).ready(function() {
       vis = new Vis();
@@ -71,28 +88,6 @@
     $(window).resize(function() {
       vis.resize()
     });
-    
-    
-    // var opts = {
-    //   lines: 9, // The number of lines to draw
-    //   length: 3, // The length of each line
-    //   width: 2, // The line thickness
-    //   radius: 4, // The radius of the inner circle
-    //   corners: 1, // Corner roundness (0..1)
-    //   rotate: 0, // The rotation offset
-    //   direction: 1, // 1: clockwise, -1: counterclockwise
-    //   color: '#000', // #rgb or #rrggbb
-    //   speed: 1, // Rounds per second
-    //   trail: 50, // Afterglow percentage
-    //   shadow: false, // Whether to render a shadow
-    //   hwaccel: false, // Whether to use hardware acceleration
-    //   className: 'spinner', // The CSS class to assign to the spinner
-    //   zIndex: 2e9, // The z-index (defaults to 2000000000)
-    //   top: 'auto', // Top position relative to parent in px
-    //   left: 'auto' // Left position relative to parent in px
-    // };
-    // var target = document.getElementById('foo');
-    // var spinner = new Spinner(opts).spin(target);
     
   </script>  
 	</body>

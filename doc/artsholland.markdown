@@ -1,3 +1,14 @@
-Welkom bij de interactieve Arts Holland-visualisatie! Arts Holland is de beste website ter wereld en als je meer informatie wilt over het datamodel of over wat er eigenlijk allemaal in de database zit, dan kan dat natuurlijk.
+Arts Holland is a central collection of open data on Dutch culture and tourism. All data about events, shows and venues shown and used by the The [artsholland.com](http://www.artsholland.com/) tourist portal directly come from the Arts Holland open data plaform, but the Arts Holland open data platform contains much more data, free and open for everybody to use.
 
-Met de knopjes hieronder kun je je keuze maken en dan leer je vanalles over [SPARQL](http://www.w3.org/TR/rdf-sparql-query/) en de inhoud en hoe het allemaal werkt en dat is natuurlijk heel erg leuk!
+Arts Holland contains the following data:
+
+- Events and venues in the Netherlands' biggest cities from [VVV](http://www.vvv.nl/) and [Nederlands Uitburo](http://www.uitburo.nl/)
+- Events in and around Amsterdam from [I amsterdam](http://www.iamsterdam.com/)
+- Publicly accessible cultural heritage sites from the [Cultural Heritage Agency of the Netherlands](http://www.cultureelerfgoed.nl/en)
+- Reviews, articles and blog posts from [Arts Holland](http://www.artsholland.com/) itself
+
+Arts Holland provides a REST API and a SPARQL endpoint to access the data. The [Arts Holland developers site](http://dev.artsholland.com/) explains both, but especially SPARQL can be somewhat hard to learn. 
+
+[SPARQL](http://www.w3.org/TR/rdf-sparql-query/) is an [RDF](http://www.w3.org/RDF/) query language for the [Semantic Web](http://www.w3.org/standards/semanticweb/). You can use the Arts Holland [SPARQL endpoint](http://api.artsholland.com/sparql?apiKey=85715d4734ee8a22571c6b69a789d8ac) to compose and test your own queries, combine triples from different objects and let the open data plaform return only the data you need for your specific purpose.
+
+This visual tutorial explains the Arts Holland data and data model, and the SPARQL code you can use to query the data. 

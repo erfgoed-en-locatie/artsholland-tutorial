@@ -5,8 +5,8 @@
   "path": [],
 	"children": [
 		{
-			"title": "Content",
-			"longtitle": "Content",
+			"title": "Data",
+			"longtitle": "Data",
 			"doc": "file:content1.markdown",
 			"sparql": "file:content1.sparql",
       "path": [0],
@@ -33,7 +33,7 @@
 		},
 		{
       "title": "Model",
-      "longtitle": "Model",
+      "longtitle": "Data Model",
 			"doc": "file:model1.markdown",
 			"sparql": "file:model1.sparql",
       "path": [1],
