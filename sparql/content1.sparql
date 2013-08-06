@@ -4,7 +4,7 @@ PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 SELECT DISTINCT ?city (COUNT(?event) AS ?events)
 WHERE {
-	?event a ah:Event ;
+	?event rdf:type ah:Event ;
 		ah:venue ?venue ;
 		time:hasBeginning ?date .
 

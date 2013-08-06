@@ -1,14 +1,8 @@
-In ??city zijn 'n hoop evenementlocaties. De belangrijkste vind je zo:
+The following query selects eight venues in ??city ordered by the amount of distinct productions that take place in the coming two weeks.
 
-Arts Holland - and many other triple stores - contains multilangual data.
-
-- langMatches
-
-If you would execute this query without the `langMatches` filter, the triple store would return duplicate results for each venue with a multilangual title. 
-
-`?venue dc:title ?venue_title` triple would match twice: once against the Dutch title and once against the English one.
-
-http://www.w3.org/TR/sparql11-query/#func-langMatches
+Arts Holland contains strings in English and Dutch. When you want to filter only one of those two languages, the  [`langMatches` filter](http://www.w3.org/TR/sparql11-query/#func-langMatches) can be used. If you would execute this query without the `langMatches` filter, duplicate results would be returned for each venue with a multilangual title. 
 
 - Subquery
 http://www.w3.org/TR/sparql11-query/#subqueries
+
+a is shorthand for rdf:type

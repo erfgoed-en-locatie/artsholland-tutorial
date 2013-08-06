@@ -1,17 +1,7 @@
+At first sight, SPARQL queries look a lot like standard SQL. SPARQL supports [grouping](http://www.w3.org/TR/sparql11-query/#groupby) (`GROUP BY`), [ordering](http://www.w3.org/TR/sparql11-query/#modOrderBy) (`ORDER BY`) and [aggregate functions](http://www.w3.org/TR/sparql11-query/#aggregateAlgebra) like [counting](http://www.w3.org/TR/sparql11-query/#defn_aggCount) (`COUNT`). `LIMIT` and `OFFSET` are also supported.
 
+But apart from the similarities in syntax, SPARQL works differently than SQL. Tables do not exist, all data is stored as [triples](http://www.w3.org/TR/rdf-concepts/#section-triples). An RDF triple consists of three components: the _subject_, the _predicate_ and the _object_. 
 
-Arts Holland bevat gegevens over culturele evenementen in heel Nederland. De meeste evenementen vinden in de grootste steden plaats, dat zien jullie hier:
+SPARQL queries usually start with [namespace definitions](http://www.w3.org/TR/sparql11-query/#prefNames). The `PREFIX` keyword can be used to define namespaces and make queries shorter and easier to change and read.
 
-http://en.wikipedia.org/wiki/Resource_Description_Framework
-http://www.w3.org/TR/rdf-concepts/
-
-- Multiple objects, combine
-
-filter http://www.w3.org/TR/sparql11-query/#expressions
-
-GROUP BY http://www.w3.org/TR/sparql11-query/#groupby
-- COUNT
-
-ORDER BY http://www.w3.org/TR/sparql11-query/#modOrderBy
-
-
+The query below retrieves the five cities where the most events take place in the coming two weeks. First, all entities of type `ah:Event` are selected, and combined with the venue and date where the event takes place. Venues have an address, of which the value of the `vcard:locality` predicate is also selected. By specifying triples, one selects combinations objects for which all those triples hold; [filters](http://www.w3.org/TR/sparql11-query/#expressions) can be used to select specific ranges and values.

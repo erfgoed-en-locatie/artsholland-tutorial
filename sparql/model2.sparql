@@ -8,12 +8,6 @@ WHERE {
 			rdfs:domain ?p_domain ;
 			rdfs:range ?p_range .	
 	}
-	{
-  	SELECT DISTINCT ?predicate
-  	WHERE {
-  		?subject a <http://purl.org/artsholland/1.0/Production> ;
-  			?predicate ?object .		
-  	} 
-    LIMIT 15
-	}
-}
+	?subject a <http://purl.org/artsholland/1.0/Production> ;
+		?predicate ?object .
+} LIMIT 10

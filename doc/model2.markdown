@@ -1,1 +1,1 @@
-EN hier zien jullie de predicates van de ??class-klasse! Mooi!
+This query can be used to get the type, range, and domain of the predicates of the class `<??class>`. Most predicates also have a label to describe itself.

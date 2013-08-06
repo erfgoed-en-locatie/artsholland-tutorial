@@ -3,9 +3,11 @@ PREFIX time: <http://www.w3.org/2006/time#>
 PREFIX dc: <http://purl.org/dc/terms/>
 PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-SELECT ?venue_title ?venue ?street_address ?postal_code ?productions
+SELECT ?venue_title ?venue ?street_address
+       ?postal_code ?productions
 WHERE {
-  SELECT ?venue_title ?venue ?street_address ?postal_code (COUNT(?production) AS ?productions)
+  SELECT ?venue_title ?venue ?street_address 
+         ?postal_code (COUNT(?production) AS ?productions)
   WHERE {
   	?venue dc:title ?venue_title ;
   	FILTER (langMatches(lang(?venue_title), "nl"))

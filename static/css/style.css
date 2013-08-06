@@ -77,9 +77,19 @@ a, a:visited {
   cursor: pointer;
 }
 
+code, 
 .CodeMirror {
    background-color: #eee;
    padding: 3px;
+}
+
+code {
+  color: #770088;
+}
+
+a:visited code,
+a code {
+  text-decoration: none;
 }
 
 #doc {
