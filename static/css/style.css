@@ -1,10 +1,19 @@
 body {
 	background-color: rgba(0,171,230,1);	
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 	font-size: 14px;
-	font-family: Futura, "Trebuchet MS", Arial, sans-serif;
 	text-rendering: optimizeLegibility;
   margin: 0;
   padding: 0;
+}
+
+h1, h2, 
+svg, #doc td {
+	font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+}
+
+#doc {
+  color: #444;
 }
 
 .hidden {

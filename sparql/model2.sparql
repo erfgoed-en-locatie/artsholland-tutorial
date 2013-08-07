@@ -1,3 +1,5 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT ?predicate
   ?p_type ?p_label 
   ?p_domain ?p_range
@@ -8,6 +10,6 @@ WHERE {
 			rdfs:domain ?p_domain ;
 			rdfs:range ?p_range .	
 	}
-	?subject a <http://purl.org/artsholland/1.0/Production> ;
+	?subject a <??class> ;
 		?predicate ?object .
 } LIMIT 10

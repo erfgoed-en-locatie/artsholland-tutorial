@@ -2,6 +2,7 @@ PREFIX ah: <http://purl.org/artsholland/1.0/>
 PREFIX time: <http://www.w3.org/2006/time#>
 PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 SELECT DISTINCT ?city (COUNT(?event) AS ?events)
 WHERE {
 	?event rdf:type ah:Event ;

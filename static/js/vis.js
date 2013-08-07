@@ -182,10 +182,30 @@ function Vis() {
     nodeClick(root.path);
   });
    
-  function update() {
+  function update(clickedNode) {
+
+    var clickedNode0, clickedNote1;    
+    if (path[0] == 0) {
+      clickedNode1 = root.children[1];
+      // clickedNode should never be root
+      if (clickedNode.path == []) {
+        clickedNode0 = root.children[0];
+      } else {
+        clickedNode0 = clickedNode;
+      }      
+    } else { // path[0] == 1
+      clickedNode0 = root.children[0];
+      // clickedNode should never be root
+      if (clickedNode.path == []) {
+        clickedNode1 = root.children[1];
+      } else {
+        clickedNode1 = clickedNode;
+      }
+    }
+    
     // Update tree
-    updateTree(root.children[0], -1);
-    updateTree(root.children[1],  1);    
+    updateTree(root.children[0], clickedNode0, -1);
+    updateTree(root.children[1], clickedNode1,  1);    
     
     // Update documentation   
     
@@ -237,15 +257,15 @@ function Vis() {
     return [x, y];
   } 
   
-  function updateTree(startNode, side) {
+  function updateTree(rootNode, clickedNode, side) {
     var sideClass = "left";
     if (side == 1) {
       sideClass = "right";
     }
-   
+      
     // Recompute the layout and data join.
     
-    var nodes = tree.nodes(startNode),
+    var nodes = tree.nodes(rootNode),
         links = tree.links(nodes);    
 
     var maxNodeWidthAtDepths = {};
@@ -424,9 +444,9 @@ function Vis() {
     if (path.length) {       
       var docSpinner = $("#doc tr[data-path='" + path + "'] td:first-child use");
       var visSpinner = $("#vis .node[data-path='" + path + "'] use");    
-      if (enabled) {      
+      if (enabled) {
         docSpinner.attr("xlink:href", "static/spinner.svg#spinner");
-        visSpinner.attr("href", "static/spinner.svg#spinner");
+        visSpinner.attr("href", "static/spinner.svg#spinner");        
       } else {
         docSpinner.attr("xlink:href", "static/triangle.svg#triangle");
         visSpinner.attr("href", "static/triangle.svg#triangle");
@@ -543,12 +563,12 @@ function Vis() {
           }          
 
           d.children = newChildren;
-          update();
+          update(d);
           setSpinners(false);
         });        
       }      
     } else {
-      update();
+      update(d);
     }  
   }  
 }

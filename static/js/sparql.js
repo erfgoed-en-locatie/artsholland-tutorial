@@ -1,7 +1,7 @@
 // TODO: create class!!!
 
 //var hostname = "http://api.artsholland.com";
-var hostname = "https://api.ah.waag.org";
+var hostname = "http://api.ah.waag.org";
 var apiKey = "1e4263ef2d20da8eff6996381bb0d78b";
 
 var week = 6048e5;
@@ -43,13 +43,14 @@ var parseSPARQLResults = function(data) {
 
 var executeSPARQL = function(sparql, callback) {
   $.getJSON(hostname + "/sparql.json?callback=?", {
-    dataType: "jsonp",
-		query: sparql,
-		api_key: apiKey
-	},
-	function(data) {
-		callback(parseSPARQLResults(data));
-	});
+      dataType: "jsonp",
+      query: sparql,
+      api_key: apiKey
+    },
+    function(data) {
+      callback(parseSPARQLResults(data));
+    }
+  );
 };
 
 var makeName = function(str) {

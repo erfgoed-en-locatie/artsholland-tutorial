@@ -1,5 +1,3 @@
-(A production is a certain play, concert, or show, which can take place multiple times, in one or more venues. An event is an instance of a production, in one venue on one specific date and time.)
+The main classes in the Arts Holland database are _events_, _venues_ and _productions_. A production is a certain play, concert, or show, which can take place multiple times, in one or more venues. An event is an instance of a production, in one venue on one specific date and time. Addresses are separate classes, as are attachments (i.e. images or videos linked to certain venues or productions). 
 
-Events, productions and venues! Dat zijn dus de basisklassen. Elk van deze klassen heeft weer een aantal eigenschappen, *predicates* in SPARQL, en die hebben op hun beurt weer 'n waarde.
-
-Zo werkt het dus eigenlijk 'n beetje!
+The query below gets the five classes of which there are the most instances in the Arts Holland database. Square brackets can be used for blank nodes which are not needed in the result set.

@@ -1,3 +1,4 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT DISTINCT ?class_label ?class (COUNT(?class) AS ?count)
 WHERE {
 	[] a ?class .

@@ -1,1 +1,1 @@
-This query can be used to get the type, range, and domain of the predicates of the class `<??class>`. Most predicates also have a label to describe itself.
+This query can be used to get the [type](http://www.w3.org/TR/rdf-schema/#ch_type), [range](http://www.w3.org/TR/rdf-schema/#ch_range), and [domain](http://www.w3.org/TR/rdf-schema/#ch_domain) of the predicates of the class `<??class>`. Most predicates also have a label to describe itself.
