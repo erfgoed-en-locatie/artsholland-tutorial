@@ -72,13 +72,12 @@ function Vis() {
   var logo = drawarea.append("svg:g")
       .attr("class","logo clickable")      
     .append("svg:use")
-        .attr("xlink:href", "#logo")
-        .attr("transform", "translate(-17,-18)");
-      
-  $("#vis").on('click', ".logo", function(event){
+      .attr("xlink:href", "#logo")
+      .attr("transform", "translate(-17,-18)")
+    .on("click", function(d) {          
      nodeClick(root, root.path);
-  });
-  
+    });
+        
   $("#doc").on('click', "h2 span", function(event) {
      var path = strToPath($(this).data("path"));
      nodeClick(pathToNode(path), path);
