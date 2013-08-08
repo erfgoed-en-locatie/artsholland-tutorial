@@ -1,3 +1,5 @@
+#!/usr/local/bin/node
+
 var sys = require("sys"),
 	os = require('os'),
 	util = require("util"),
@@ -16,7 +18,7 @@ var sys = require("sys"),
 	prefixes = require('./prefixes');
 
 mu.root = __dirname + "/templates";
-server.listen(9999);
+server.listen(12345);
 app.use("/static", express.static(__dirname + "/static"));
 
 var graph = {};
@@ -35,8 +37,7 @@ function render(res, filename) {
 	util.pump(stream, res);
 }
 
-app.get("/", function(req, res) {
-	//render(res, "index.html");	
+function index(req, res) {
 	try {
 		fs.readFile('./templates/index.html', function(error, content) {
 			res.writeHead(200, {'Content-Type' : 'text/html'});
@@ -46,6 +47,14 @@ app.get("/", function(req, res) {
 		res.writeHead(500, {'Content-Type' : 'text/plain'});
 		res.end('Internal Server Error');
 	}	
+}
+
+app.get("/", function(req, res) {
+  index(req, res);
+});
+
+app.get("/index.html", function(req, res) {
+  index(req, res);
 });
 
 app.get("/prefixes.json", function(req, res) {

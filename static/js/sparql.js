@@ -81,8 +81,7 @@ var formatDateTime = function(str) {
   if (str) {
     var regex = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})Z/;
     if (str.match(regex)) {
-      //return str.replace(regex, "$3-$2-$1 $4:$5");
-    
+      //return str.replace(regex, "$3-$2-$1 $4:$5");    
       return moment(str).calendar()
     }
     
@@ -117,8 +116,8 @@ var removePrefixes = function(sparql) {
   }
 };
 
-var getJSONPLink = function(sparql) {
-  return hostname + "/sparql.json?query=" + encodeURIComponent(sparql) + "&api_key=" + apiKey + "&callback=data&dataType=jsonp";
+var getJSONLink = function(sparql) {
+  return hostname + "/sparql.json?query=" + encodeURIComponent(sparql) + "&api_key=" + apiKey;
 };
 
 var getSPARQLBrowserLink = function(sparql) {
