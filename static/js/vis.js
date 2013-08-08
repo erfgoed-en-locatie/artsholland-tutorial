@@ -3,8 +3,7 @@ function Vis() {
   // TODO: also implement?? http://bl.ocks.org/mbostock/4063550
   
   var width = 1400,
-      height = 800,
-      offset = {x: 0, y: 0}; // Offset of center. Used to move tree to 'active' nodes when clicked.
+      height = 800;
       
   var path = [];
   
@@ -53,6 +52,7 @@ function Vis() {
   
   drawarea.append("line")
       .attr("class", "link")
+      .attr("id", "root-link0")
       .attr("marker-start", "url(#circle-marker)")
       .attr("marker-end", "url(#circle-marker)")
       .attr("x1", -subTreeX + linkSpacing - 8)
@@ -62,6 +62,7 @@ function Vis() {
 
   drawarea.append("line")
       .attr("class", "link")
+      .attr("id", "root-link1")
       .attr("marker-start", "url(#circle-marker)")
       .attr("marker-end", "url(#circle-marker)")
       .attr("x1", subTreeX - linkSpacing + 8)
@@ -117,7 +118,7 @@ function Vis() {
   // TODO: also make classes from other functions and sparql.js 
   this.resize = function() {
     $("#center")
-        .attr("transform", "translate(" + ($("#vis").width() / 2 + offset.x) + "," + ($("#vis").height() / 2 + offset.y)  + ")");
+        .attr("transform", "translate(" + ($("#vis").width() / 2) + "," + ($("#vis").height() / 2)  + ")");
   }
   
   function zoom() {
@@ -344,23 +345,50 @@ function Vis() {
         .text(function(d) { return d.subtitle; })
         .attr("text-anchor", function(d) { return side > 0 ? "begin": "end"; });
   
-     nodeEnter.append("svg:use")
-       .attr("xlink:href", "#triangle")
-       .style("fill-opacity", 1e-6)
-       .attr("transform", function(d) {
-         var titleWidth = $(".title", this.parentNode)[0].getBBox().width;
-         d.width = titleWidth * 2;
+    nodeEnter.append("svg:use")
+      .attr("xlink:href", "#triangle")
+      .style("fill-opacity", 1e-6)
+      .attr("transform", function(d) {
+        var titleWidth = $(".title", this.parentNode)[0].getBBox().width;
+        d.width = titleWidth * 2;
          
-         var rotate = "rotate(" + (side > 0 ? 0 : 180) + " 7,9)";
-         var translate = "translate(" + ((titleWidth + 3) * side - (side > 0 ? 0 : 13)) + "," + (-9) + ")";
+        var rotate = "rotate(" + (side > 0 ? 0 : 180) + " 7,9)";
+        var translate = "translate(" + ((titleWidth + 3) * side - (side > 0 ? 0 : 13)) + "," + (-9) + ")";
          
-         return translate + " " + rotate;        
-       });
+        return translate + " " + rotate;        
+      });
         
     // Compute center offset 
     // midden van :
     //  rechterkant van node met: data-depth = path.length
     //  linkerkant van node met: data-depth = path.length - 1
+    
+    d3.select("#center").transition()
+        .duration(duration)
+        .attr("transform", function(d) {
+          var cx = $("#vis").width() / 2;
+          var cy = $("#vis").height() / 2;  
+                    
+          var x = 0, y = 0
+          
+          if (path.length > 0) {
+            node0 = pathToNode(path.concat([0]));
+            node1 = pathToNode(path);
+            var width = 0;
+            if (node1.width) {
+              width = node1.width;
+            }
+            y = ((node1.y - width) - node0.y) / 2 + (node1.y - width);
+            x = 0;//node0.x0 - node1.x0;            
+          }
+          
+          //+- de pan!!
+          
+          return "translate(" + (translateX(y, side) + cx) + "," + cy + ")";
+        });
+    
+    
+
       
     // Transition nodes to their new position.
     var nodeUpdate = node.transition()
