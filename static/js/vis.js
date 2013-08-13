@@ -313,10 +313,11 @@ function Vis() {
           }
         });
         
+        
     nodeEnter.append("text")
         .attr("class", "title")
         .attr("x", 0)
-        .attr("y", ".36em")
+        .attr("y", ".29em")
         .style("fill-opacity", 1e-6)
         .text(function(d) { return d.title; })
         .attr("text-anchor", function(d) { return side > 0 ? "begin": "end"; });
@@ -342,10 +343,9 @@ function Vis() {
         return translate + " " + rotate;        
       });
         
-    // Compute center offset 
-    // midden van :
-    //  rechterkant van node met: data-depth = path.length
-    //  linkerkant van node met: data-depth = path.length - 1
+    // Compute center offset, set #center to middle of:
+    //   right side of node with: data-depth = path.length
+    //   left side of node with: data-depth = path.length - 1
     
     d3.select("#center").transition()
         .duration(duration)
