@@ -77,6 +77,14 @@ var getVar = function(vari, obj) {
   return null;
 };
 
+function quote(str) {
+  return (str+'').replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+};
+
+function replaceAll(str, find, replace) {
+  return str.replace(new RegExp(quote(find), 'g'), replace);
+}
+
 var formatDateTime = function(str) {
   if (str) {
     var regex = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})Z/;
@@ -92,7 +100,7 @@ var formatDateTime = function(str) {
 var replaceVars = function(str, vars) {
   if (str) {
     for (var v in vars) {
-      str = str.replace("??" + v, vars[v])
+      str = replaceAll(str, "??" + v, vars[v])
     }
   }
   return str;
@@ -103,7 +111,7 @@ var replacePrefixes = function(str, prefixes) {
     for (var prefix in prefixes) {
       var uri = prefixes[prefix];
       if (str.indexOf(uri) == 0) {
-        return str.replace(uri, prefix + ":");
+        return replaceAll(str, uri, prefix + ":");
       }
     }
   }
