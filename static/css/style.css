@@ -139,6 +139,10 @@ a code {
   padding: 0;
 }
 
+#doc li.docitem {
+  line-height: 135%
+}
+
 #doc li.docitem .result-links {
   float: right;
 }
@@ -160,6 +164,12 @@ a code {
 }
 
 /* SVG */
+
+#vis svg {
+  width: 100%;
+  height: 100%;
+  overflow: scroll;  
+}
 
 .link {
 	fill: none;

@@ -15,23 +15,7 @@ function Vis() {
   var tree = d3.layout.tree()
       .size([height, width]);
         
-  var svg = d3.select("#vis").append("svg:svg")
-      .attr("width", "100%")
-      .attr("height", "100%")
-      .style("overflow", "scroll")
-    
-  svg.append("defs").append("marker")
-      .attr("id", "circle-marker")
-      .attr("refX", 0)
-      .attr("refY", 0)
-      .attr("viewBox", "-5 -5 10 10")
-      .attr("markerWidth", 6)
-      .attr("markerHeight", 6)
-      .attr("orient", "auto")
-    .append("circle")    
-      .attr("cx", 0)
-      .attr("cy", 0)
-      .attr("r", 5);
+  var svg = d3.select("#vis svg");
 
   var center = svg.append("svg:g")
       .attr("id","center")
@@ -530,7 +514,6 @@ function Vis() {
       
       d.children = [];
 
-      // functie: source from path
       var source;
       if (d.path.length == 1) {
         source = root.children[d.path[0]]
@@ -587,11 +570,24 @@ function Vis() {
               }
               p = p.parent;
             }            
+
+
+            var title = replacePrefixes(childTitle, prefixes);
+            var longTitle = replacePrefixes(childLongTitle, prefixes);
+            var subTitle = formatDateTime(replacePrefixes(childSubTitle, prefixes));
+
+            if (!longTitle || longTitle.indexOf("??") >= 0) {
+              longTitle = '';
+            }
+
+            if (!subTitle || subTitle.indexOf("??") >= 0) {
+              subTitle = '';
+            }
             
             var newChild = {
-              title: replacePrefixes(childTitle, prefixes),
-              longtitle: replacePrefixes(childLongTitle, prefixes),
-              subtitle: formatDateTime(replacePrefixes(childSubTitle, prefixes)),
+              title: title,
+              longtitle: longTitle,
+              subtitle: subTitle,
         			doc: childDoc,
         			sparql: childSparql,
               path: d.path.concat([i]),

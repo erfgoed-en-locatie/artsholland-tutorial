@@ -1,1 +1,6 @@
-This query can be used to get the [type](http://www.w3.org/TR/rdf-schema/#ch_type), [range](http://www.w3.org/TR/rdf-schema/#ch_range), and [domain](http://www.w3.org/TR/rdf-schema/#ch_domain) of the predicates of the class `<??class>`. Most predicates also have a label to describe itself.
+This query can be used to get the [type](http://www.w3.org/TR/rdf-schema/#ch_type), [range](http://www.w3.org/TR/rdf-schema/#ch_range), and [domain](http://www.w3.org/TR/rdf-schema/#ch_domain) of the predicates of the class `<??class>`. 
+
+First, a maximum of five predicates in Arts Holland's own namespace are selected, using a filter and two of SPARQL's [string functions](http://www.w3.org/TR/sparql11-query/#func-strstarts) (i.e. `STR` and `STRSTARTS`). The results of this subquery are combined with the results of the second subquery which selects another maximum of five predicates - this time _not_ in Art Holland's namespace. The [`UNION` keyword](http://www.w3.org/TR/sparql11-query/#alternatives) can be used to combine multiple result sets.
+
+Arts Holland only knows about its own [ontology](http://www.w3.org/TR/rdf-schema/), but used many predicates and classes from other schemas such as [RDFS](http://www.w3.org/TR/rdf-schema/) and [Dublin Core](http://dublincore.org/). Arts Holland does not know the metadata of predicates and classes from _external_ ontologies, and thus does not return the range, domain and label of predicates from those ontologies.
+
