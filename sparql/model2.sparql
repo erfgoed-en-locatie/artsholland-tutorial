@@ -1,35 +1,32 @@
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-SELECT DISTINCT ?predicate
-  ?p_type ?p_label ?p_range
-WHERE {	
-	{
+SELECT DISTINCT ?predicate ?p_type ?p_label ?p_range
+WHERE {  
+  {
     SELECT * WHERE {
-		  OPTIONAL {
-			  ?predicate rdf:type ?p_type ;
-				  rdfs:label ?p_label ;
-          rdfs:range ?p_range .	
+      OPTIONAL {
+        ?predicate rdf:type ?p_type ;
+          rdfs:label ?p_label ;
+          rdfs:range ?p_range .  
       }
-		  ?subject a <??class> ;
-			  ?predicate ?object .
-		
+      ?subject a <??class> ;
+        ?predicate ?object .
+    
       FILTER( STRSTARTS(STR(?predicate),"http://purl.org/artsholland/1.0/") )
-	  }
-    LIMIT 5
+    } LIMIT 5
   } 
   UNION 
-  {	
-	  SELECT * WHERE {
-		  OPTIONAL {
-			  ?predicate rdf:type ?p_type ;
-				  rdfs:label ?p_label ;
-          rdfs:range ?p_range .	
+  {  
+    SELECT * WHERE {
+      OPTIONAL {
+        ?predicate rdf:type ?p_type ;
+          rdfs:label ?p_label ;
+          rdfs:range ?p_range .  
       }
-		  ?subject a <??class> ;
-			  ?predicate ?object .		
-		
+      ?subject a <??class> ;
+        ?predicate ?object .
+            
       FILTER( !STRSTARTS(STR(?predicate),"http://purl.org/artsholland/1.0/") )
-	  } 
-    LIMIT 5
-  }	
+    } LIMIT 5
+  }  
 }

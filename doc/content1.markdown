@@ -1,4 +1,4 @@
-At first sight, SPARQL queries look a lot like standard SQL. SPARQL supports [grouping](http://www.w3.org/TR/sparql11-query/#groupby) (`GROUP BY`), [ordering](http://www.w3.org/TR/sparql11-query/#modOrderBy) (`ORDER BY`) and [aggregate functions](http://www.w3.org/TR/sparql11-query/#aggregateAlgebra) like [counting](http://www.w3.org/TR/sparql11-query/#defn_aggCount) (`COUNT`). `LIMIT` and `OFFSET` are also supported.
+At first sight, SPARQL queries look a lot like standard SQL. SPARQL supports [grouping](http://www.w3.org/TR/sparql11-query/#groupby) (`GROUP BY`), [ordering](http://www.w3.org/TR/sparql11-query/#modOrderBy) (`ORDER BY`) and [aggregate functions](http://www.w3.org/TR/sparql11-query/#aggregateAlgebra) like [counting](http://www.w3.org/TR/sparql11-query/#defn_aggCount) (`COUNT`). `LIMIT` and `OFFSET`.
 
 But apart from the similarities in syntax, SPARQL works differently than SQL. Tables do not exist, all data is stored as [triples](http://www.w3.org/TR/rdf-concepts/#section-triples). An RDF triple consists of three components: the _subject_, the _predicate_ and the _object_. 
 

@@ -5,16 +5,16 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 SELECT DISTINCT ?city (COUNT(?event) AS ?events)
 WHERE {
-	?event rdf:type ah:Event ;
-		ah:venue ?venue ;
-		time:hasBeginning ?date .
+  ?event rdf:type ah:Event ;
+    ah:venue ?venue ;
+    time:hasBeginning ?date .
 
-	?venue ah:locationAddress ?address .
+  ?venue ah:locationAddress ?address .
 
-	?address vcard:locality ?city .
+  ?address vcard:locality ?city .
 
-	FILTER (?date >= "??date_start"^^xsd:dateTime)
-	FILTER (?date < "??date_end"^^xsd:dateTime)
+  FILTER (?date >= "??date_start"^^xsd:dateTime)
+  FILTER (?date < "??date_end"^^xsd:dateTime)
 } 
 GROUP BY ?city
 ORDER BY DESC(?events)

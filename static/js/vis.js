@@ -194,6 +194,7 @@ function Vis() {
       }
     }
     
+    // TODO: 0 and 1 (path index) instead of -1 and 1 for side
     // Update tree
     updateTree(root.children[0], clickedNode0, -1);
     updateTree(root.children[1], clickedNode1,  1);    
@@ -242,10 +243,17 @@ function Vis() {
   }
   
   function getXYFromTranslate(element){
-    var split = element.attr("transform").split(" ");
-    return split;
-    var x = ~~split[0].split("(")[1];
-    var y = ~~split[1].split(")")[0];
+    var x = 0, y = 0;
+        
+    var transform = element.attr("transform");        
+    if (transform) {
+      var match = /translate\(([\d.]+),+([\d.]+)\)/g.exec(transform)
+      if (match && match.length == 3) {
+        x = parseFloat(match[1]);
+        y = parseFloat(match[2]);
+      }
+
+    }
     return [x, y];
   } 
   
@@ -347,32 +355,39 @@ function Vis() {
     //   right side of node with: data-depth = path.length
     //   left side of node with: data-depth = path.length - 1
     
-    d3.select("#center").transition()
-        .duration(duration)
-        .attr("transform", function(d) {
-          var cx = $("#vis").width() / 2;
-          var cy = $("#vis").height() / 2;  
-                    
-          var x = 0, y = 0
-          
-          if (path.length > 0) {
-            node0 = pathToNode(path.concat([0]));
-            node1 = pathToNode(path);
-            var width = 0;
-            if (node1.width) {
-              width = node1.width;
-            }
-            y = ((node1.y - width) - node0.y) / 2 + (node1.y - width);
-            x = 0;//node0.x0 - node1.x0;            
-          }
-          
-          //+- de pan!!
-          
-          return "translate(" + (translateX(y, side) + cx) + "," + cy + ")";
-        });
-    
-    
-
+    // //if (side == -1 && path[0])
+    // d3.select("#center").transition()
+    //     .duration(duration)
+    //     .attr("transform", function(d) {
+    //       var cx = $("#vis").width() / 2;
+    //       var cy = $("#vis").height() / 2;  
+    //                 
+    //       var x = 0, y = 0
+    //       
+    //       if (path.length > 0) {
+    //         var node0 = pathToNode(path.concat([0]));
+    //         var node1 = pathToNode(path);
+    //         var width = 0;
+    //         if (node1.width) {
+    //           width = node1.width;
+    //         }
+    //         y = ((node1.y - width) - node0.y) / 2 + (node1.y - width);
+    //         x = 0;//node0.x0 - node1.x0;            
+    //       }
+    //       
+    //       // Add/substract panned translation:
+    //       var pan = getXYFromTranslate($("#drawarea"))
+    //       
+    //       cx -= pan[0];
+    //       cy -= pan[1];
+    //       
+    //       //return "translate(" + (translateX(y, side) + cx) + "," + cy + ")";
+    //       
+    //       
+    //       
+    //       return "translate(" + cx + "," + cy + ")";
+    //     });
+        
       
     // Transition nodes to their new position.
     var nodeUpdate = node.transition()

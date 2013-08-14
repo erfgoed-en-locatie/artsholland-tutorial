@@ -9,26 +9,26 @@ WHERE {
   SELECT ?venue_title ?venue ?street_address 
          ?postal_code (COUNT(?production) AS ?productions)
   WHERE {
-  	?venue dc:title ?venue_title ;
-  	FILTER (langMatches(lang(?venue_title), "nl"))
+    ?venue dc:title ?venue_title ;
+    FILTER (langMatches(lang(?venue_title), "nl"))
     {
-  		SELECT DISTINCT ?venue ?production ?street_address ?postal_code
-  		WHERE {
-  			?venue a ah:Venue ;
-  				ah:locationAddress ?address .	
-  			?address vcard:locality "??city" ;
-  				vcard:street-address ?street_address ;
-  				vcard:postal-code ?postal_code .
-	
-  			?event a ah:Event ;
-  				ah:venue ?venue ;
-  				ah:production ?production ;
-  				time:hasBeginning ?date .			
+      SELECT DISTINCT ?venue ?production ?street_address ?postal_code
+      WHERE {
+        ?venue a ah:Venue ;
+          ah:locationAddress ?address .  
+        ?address vcard:locality "??city" ;
+          vcard:street-address ?street_address ;
+          vcard:postal-code ?postal_code .
+  
+        ?event a ah:Event ;
+          ah:venue ?venue ;
+          ah:production ?production ;
+          time:hasBeginning ?date .      
 
         FILTER (?date >= "??date_start"^^xsd:dateTime)
         FILTER (?date < "??date_end"^^xsd:dateTime)
-  		}
-  	}	
+      }
+    }  
   }
   GROUP BY ?venue ?venue_title ?street_address ?postal_code
   ORDER BY DESC(?productions)
